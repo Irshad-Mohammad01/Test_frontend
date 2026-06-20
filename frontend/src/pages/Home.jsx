@@ -811,7 +811,7 @@ export const Home = () => {
     if (slides.length === 0) return;
     const timer = setInterval(() => {
       setActiveSlide(prev => (prev + 1) % slides.length);
-    }, 6000);
+    }, 5000);
     return () => clearInterval(timer);
   }, [slides.length]);
 
@@ -1069,108 +1069,110 @@ export const Home = () => {
             </Link>
           )}
 
-          {slides.map((slide, idx) => (
-            <div
-              key={idx}
-              className={`absolute inset-0 bg-gradient-to-tr ${slide.gradient} flex items-center justify-between transition-opacity duration-1000 ${idx === activeSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
-                }`}
-            >
-              {/* Premium Highlights, Lighting, and Gradients */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-[#1B0B26]/30 to-[#3F1D5A]/10 mix-blend-multiply opacity-90 pointer-events-none" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(212,167,95,0.18),transparent_45%)] pointer-events-none" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(92,46,126,0.3),transparent_60%)] pointer-events-none" />
-              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#D4A75F]/25 to-transparent pointer-events-none" />
-              <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0.01),rgba(255,255,255,0.04)_50%,rgba(255,255,255,0.01))] pointer-events-none" />
+          <motion.div
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(event, info) => {
+              const swipeThreshold = 50;
+              if (info.offset.x < -swipeThreshold) {
+                handleNextSlide();
+              } else if (info.offset.x > swipeThreshold) {
+                handlePrevSlide();
+              }
+            }}
+            className="w-full h-full cursor-grab active:cursor-grabbing relative"
+          >
+            {slides.map((slide, idx) => (
+              <div
+                key={idx}
+                className={`absolute inset-0 bg-gradient-to-tr ${slide.gradient} flex items-center justify-between transition-opacity duration-1000 ${idx === activeSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                  }`}
+              >
+                {/* Premium Highlights, Lighting, and Gradients */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-[#1B0B26]/30 to-[#3F1D5A]/10 mix-blend-multiply opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(212,167,95,0.18),transparent_45%)] pointer-events-none" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(92,46,126,0.3),transparent_60%)] pointer-events-none" />
+                <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#D4A75F]/25 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0.01),rgba(255,255,255,0.04)_50%,rgba(255,255,255,0.01))] pointer-events-none" />
 
-              <div className="px-8 sm:px-14 md:px-20 w-full text-white py-6 md:py-8 flex flex-col md:flex-row items-center justify-between h-full relative gap-8 z-10">
-                <motion.div 
-                  style={{ opacity: opacityParallax }}
-                  className="w-full md:w-[48%] flex-none flex flex-col justify-center text-left md:pl-6 lg:pl-10"
-                >
-                  <motion.span
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                    transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#D4A75F]/15 text-[#D4A75F] border border-[#D4A75F]/30 w-fit mb-6 tracking-wide"
-                  >
-                    <Sparkles className="h-3.5 w-3.5 animate-pulse" />
-                    {slide.badge}
-                  </motion.span>
-                  <motion.h1
-                    initial={{ opacity: 0, y: 25 }}
-                    animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
-                    transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-4xl sm:text-6xl font-serif font-bold tracking-normal leading-tight text-white mb-4"
-                  >
-                    {slide.title}
-                  </motion.h1>
-                  <motion.p
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                    transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-xl sm:text-2xl font-serif text-[#D4A75F] mb-4"
-                  >
-                    {slide.subtitle}
-                  </motion.p>
-                  <motion.p
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-                    transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-8 max-w-xl hidden sm:block"
-                  >
-                    {slide.desc}
-                  </motion.p>
-                  <motion.a
-                    initial={{ opacity: 0 }}
-                    animate={idx === activeSlide ? { opacity: 1 } : { opacity: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                    href={slide.btnLink || `/?category=${slide.catFilter}`}
-                    className="px-8 py-3.5 bg-[#D4A75F] text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-lg transition-transform hover:scale-105 duration-300 w-fit flex items-center gap-2 cursor-pointer gold-shimmer-btn relative overflow-hidden"
-                  >
-                    {slide.btnText}
-                  </motion.a>
-                </motion.div>
-                {slide.image_url && (
+                <div className="px-8 sm:px-14 md:px-20 w-full text-white py-6 md:py-8 flex flex-col md:flex-row items-center justify-between h-full relative gap-8 z-10">
                   <motion.div 
-                    style={{ y: yParallax }}
-                    className="w-full md:w-[52%] flex-none flex items-center justify-center relative h-full"
+                    style={{ opacity: opacityParallax }}
+                    className="w-full md:w-[48%] flex-none flex flex-col justify-center text-left md:pl-6 lg:pl-10"
                   >
-                    <div className="absolute inset-0 bg-[#D4A75F]/10 rounded-full blur-3xl -z-10 animate-pulse"></div>
-                    <motion.img
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={idx === activeSlide ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                      src={slide.image_url}
-                      alt={slide.title}
-                      className="max-h-[350px] md:max-h-[620px] lg:max-h-[680px] xl:max-h-[730px] w-auto max-w-[95%] object-contain rounded-3xl shadow-2xl transition-all duration-700 hover:scale-105 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] animate-float-slow"
-                    />
+                    <motion.span
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+                      transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#D4A75F]/15 text-[#D4A75F] border border-[#D4A75F]/30 w-fit mb-6 tracking-wide"
+                    >
+                      <Sparkles className="h-3.5 w-3.5 animate-pulse" />
+                      {slide.badge}
+                    </motion.span>
+                    <motion.h1
+                      initial={{ opacity: 0, y: 25 }}
+                      animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
+                      transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      className="text-4xl sm:text-6xl font-serif font-bold tracking-normal leading-tight text-white mb-4"
+                    >
+                      {slide.title}
+                    </motion.h1>
+                    <motion.p
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+                      transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="text-xl sm:text-2xl font-serif text-[#D4A75F] mb-4"
+                    >
+                      {slide.subtitle}
+                    </motion.p>
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                      transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-8 max-w-xl hidden sm:block"
+                    >
+                      {slide.desc}
+                    </motion.p>
+                    <motion.a
+                      initial={{ opacity: 0 }}
+                      animate={idx === activeSlide ? { opacity: 1 } : { opacity: 0 }}
+                      transition={{ duration: 0.5, delay: 0.5 }}
+                      href={slide.btnLink || `/?category=${slide.catFilter}`}
+                      className="px-8 py-3.5 bg-[#D4A75F] text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-lg transition-transform hover:scale-105 duration-300 w-fit flex items-center gap-2 cursor-pointer gold-shimmer-btn relative overflow-hidden"
+                    >
+                      {slide.btnText}
+                    </motion.a>
                   </motion.div>
-                )}
+                  {slide.image_url && (
+                    <motion.div 
+                      style={{ y: yParallax }}
+                      className="w-full md:w-[52%] flex-none flex items-center justify-center relative h-full"
+                    >
+                      <div className="absolute inset-0 bg-[#D4A75F]/10 rounded-full blur-3xl -z-10 animate-pulse"></div>
+                      <motion.img
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={idx === activeSlide ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                        src={slide.image_url}
+                        alt={slide.title}
+                        draggable="false"
+                        className="max-h-[350px] md:max-h-[620px] lg:max-h-[680px] xl:max-h-[730px] w-auto max-w-[95%] object-contain rounded-3xl shadow-2xl transition-all duration-700 hover:scale-105 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] animate-float-slow select-none"
+                      />
+                    </motion.div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
-
-          {/* Carousel Navigation Arrows */}
-          <button
-            onClick={handlePrevSlide}
-            className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full border border-[#D4A75F]/30 hover:border-[#D4A75F] bg-[#3F1D5A]/40 hover:bg-[#3F1D5A]/70 text-[#D4A75F] transition-all duration-300 backdrop-blur-sm cursor-pointer"
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </button>
-          <button
-            onClick={handleNextSlide}
-            className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full border border-[#D4A75F]/30 hover:border-[#D4A75F] bg-[#3F1D5A]/40 hover:bg-[#3F1D5A]/70 text-[#D4A75F] transition-all duration-300 backdrop-blur-sm cursor-pointer"
-          >
-            <ChevronRight className="h-6 w-6" />
-          </button>
+            ))}
+          </motion.div>
 
           {/* Indicator dots */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex space-x-3">
             {slides.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setActiveSlide(idx)}
-                className={`h-1.5 transition-all duration-300 rounded-full ${idx === activeSlide ? 'bg-[#D4A75F] w-8' : 'bg-white/30 hover:bg-white/50 w-2.5'
+                className={`h-1.5 transition-all duration-300 rounded-full cursor-pointer ${idx === activeSlide ? 'bg-[#D4A75F] w-8' : 'bg-slate-350 hover:bg-slate-200 w-2.5'
                   }`}
               />
             ))}
@@ -1191,116 +1193,116 @@ export const Home = () => {
             </Link>
           )}
 
-          {slides.map((slide, idx) => (
-            <div
-              key={idx}
-              className={`bg-gradient-to-tr ${slide.gradient} transition-opacity duration-1000 ${
-                idx === activeSlide 
-                  ? 'opacity-100 z-10 relative w-full h-auto' 
-                  : 'opacity-0 z-0 absolute inset-0 pointer-events-none'
-              }`}
-            >
-              {/* Premium Highlights, Lighting, and Gradients */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-[#1B0B26]/30 to-[#3F1D5A]/10 mix-blend-multiply opacity-90 pointer-events-none" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(212,167,95,0.15),transparent_50%)] pointer-events-none" />
-              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#D4A75F]/20 to-transparent pointer-events-none" />
+          <motion.div
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(event, info) => {
+              const swipeThreshold = 40;
+              if (info.offset.x < -swipeThreshold) {
+                handleNextSlide();
+              } else if (info.offset.x > swipeThreshold) {
+                handlePrevSlide();
+              }
+            }}
+            className="w-full h-full cursor-grab active:cursor-grabbing relative"
+          >
+            {slides.map((slide, idx) => (
+              <div
+                key={idx}
+                className={`bg-gradient-to-tr ${slide.gradient} transition-opacity duration-1000 ${
+                  idx === activeSlide 
+                    ? 'opacity-100 z-10 relative w-full h-auto' 
+                    : 'opacity-0 z-0 absolute inset-0 pointer-events-none'
+                }`}
+              >
+                {/* Premium Highlights, Lighting, and Gradients */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-[#1B0B26]/30 to-[#3F1D5A]/10 mix-blend-multiply opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(212,167,95,0.15),transparent_50%)] pointer-events-none" />
+                <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#D4A75F]/20 to-transparent pointer-events-none" />
 
-              {/* Spacing: Top Padding: 24px, Side Padding: 20px, Bottom Padding: 24px (extra bottom padding to clear navigation dots and arrows) */}
-              <div className="pt-[24px] px-[20px] pb-[76px] w-full text-white flex flex-col items-center text-center relative z-10">
-                
-                {/* 1. Category Badge */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-                  transition={{ duration: 0.4, delay: 0.1 }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-[#D4A75F]/15 text-[#D4A75F] border border-[#D4A75F]/30 w-fit mb-4 tracking-wide"
-                >
-                  <Sparkles className="h-3 w-3 animate-pulse" />
-                  {slide.badge}
-                </motion.div>
-
-                {/* 2. Headline */}
-                <motion.h1
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="text-[36px] sm:text-[40px] font-serif font-bold tracking-normal leading-[1.2] text-white mb-3 max-w-md break-words"
-                >
-                  {slide.title}
-                </motion.h1>
-
-                {/* 3. Subtitle */}
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="text-[16px] sm:text-[18px] font-serif text-[#D4A75F] mb-5 max-w-md break-words"
-                >
-                  {slide.subtitle}
-                </motion.p>
-
-                {/* 4. CTA Button */}
-                <motion.a
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={idx === activeSlide ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
-                  href={slide.btnLink || `/?category=${slide.catFilter}`}
-                  className="px-6 py-3 bg-[#D4A75F] text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-lg transition-transform active:scale-95 duration-300 w-fit flex items-center gap-2 cursor-pointer gold-shimmer-btn relative overflow-hidden mb-6"
-                >
-                  {slide.btnText}
-                </motion.a>
-
-                {/* 5. Product Image */}
-                {slide.image_url && (
+                {/* Spacing: Top Padding: 24px, Side Padding: 20px, Bottom Padding: 24px (extra bottom padding to clear navigation dots and arrows) */}
+                <div className="pt-[24px] px-[20px] pb-[76px] w-full text-white flex flex-col items-center text-center relative z-10">
+                  
+                  {/* 1. Category Badge */}
                   <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-[#D4A75F]/15 text-[#D4A75F] border border-[#D4A75F]/30 w-fit mb-4 tracking-wide"
+                  >
+                    <Sparkles className="h-3 w-3 animate-pulse" />
+                    {slide.badge}
+                  </motion.div>
+
+                  {/* 2. Headline */}
+                  <motion.h1
                     initial={{ opacity: 0, y: 15 }}
                     animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                    transition={{ duration: 0.6, delay: 0.45 }}
-                    className="w-full flex items-center justify-center relative mt-2"
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="text-[36px] sm:text-[40px] font-serif font-bold tracking-normal leading-[1.2] text-white mb-3 max-w-md break-words"
                   >
-                    <div className="absolute inset-0 bg-[#D4A75F]/5 rounded-full blur-3xl -z-10 animate-pulse"></div>
-                    <img
-                      src={slide.image_url}
-                      alt={slide.title}
-                      className="w-full h-auto min-h-[220px] max-h-[320px] object-contain rounded-2xl shadow-xl filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]"
-                    />
-                  </motion.div>
-                )}
+                    {slide.title}
+                  </motion.h1>
 
+                  {/* 3. Subtitle */}
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="text-[16px] sm:text-[18px] font-serif text-[#D4A75F] mb-5 max-w-md break-words"
+                  >
+                    {slide.subtitle}
+                  </motion.p>
+
+                  {/* 4. CTA Button */}
+                  <motion.a
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={idx === activeSlide ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4, delay: 0.4 }}
+                    href={slide.btnLink || `/?category=${slide.catFilter}`}
+                    className="px-6 py-3 bg-[#D4A75F] text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-lg transition-transform active:scale-95 duration-300 w-fit flex items-center gap-2 cursor-pointer gold-shimmer-btn relative overflow-hidden mb-6"
+                  >
+                    {slide.btnText}
+                  </motion.a>
+
+                  {/* 5. Product Image */}
+                  {slide.image_url && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+                      transition={{ duration: 0.6, delay: 0.45 }}
+                      className="w-full flex items-center justify-center relative mt-2"
+                    >
+                      <div className="absolute inset-0 bg-[#D4A75F]/5 rounded-full blur-3xl -z-10 animate-pulse"></div>
+                      <img
+                        src={slide.image_url}
+                        alt={slide.title}
+                        draggable="false"
+                        className="w-full h-auto min-h-[220px] max-h-[320px] object-contain rounded-2xl shadow-xl filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] select-none"
+                      />
+                    </motion.div>
+                  )}
+
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </motion.div>
 
-          {/* Slider Arrows & Dots (placed at the bottom of the banner container near dots) */}
-          <div className="absolute bottom-4 inset-x-0 z-20 flex items-center justify-center gap-6">
-            {/* Prev Arrow */}
-            <button
-              onClick={handlePrevSlide}
-              className="p-2 rounded-full border border-[#D4A75F]/35 hover:border-[#D4A75F] bg-[#3F1D5A]/50 text-[#D4A75F] transition-all backdrop-blur-sm active:scale-90 cursor-pointer"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-
+          {/* Slider Dots */}
+          <div className="absolute bottom-4 inset-x-0 z-30 flex items-center justify-center gap-6">
             {/* Indicator dots */}
             <div className="flex space-x-2">
               {slides.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveSlide(idx)}
-                  className={`h-1.5 transition-all duration-300 rounded-full ${
-                    idx === activeSlide ? 'bg-[#D4A75F] w-6' : 'bg-white/30 hover:bg-white/50 w-1.5'
+                  className={`h-1.5 transition-all duration-300 rounded-full cursor-pointer ${
+                    idx === activeSlide ? 'bg-[#D4A75F] w-6' : 'bg-slate-350 hover:bg-slate-200 w-1.5'
                   }`}
                 />
               ))}
             </div>
-
-            {/* Next Arrow */}
-            <button
-              onClick={handleNextSlide}
-              className="p-2 rounded-full border border-[#D4A75F]/35 hover:border-[#D4A75F] bg-[#3F1D5A]/50 text-[#D4A75F] transition-all backdrop-blur-sm active:scale-90 cursor-pointer"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
           </div>
         </div>
       </div>
@@ -1311,20 +1313,20 @@ export const Home = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full bg-[#FAFAFA] border-y border-[#F2E8D9] py-16"
+        className="w-full bg-white dark:bg-[#0B1020] border-y border-[#F2E8D9] dark:border-slate-800/80 py-16 transition-colors duration-300"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#3F1D5A] tracking-wider relative inline-block pb-4">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#3F1D5A] dark:text-[#D4A75F] tracking-wider relative inline-block pb-4 transition-colors duration-300">
               Shop By Category
               <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-[#D4A75F]"></span>
             </h2>
-            <p className="text-xs text-slate-500 mt-3 tracking-widest uppercase font-semibold">
+            <p className="text-xs text-slate-500 dark:text-[#CBD5E1] mt-3 tracking-widest uppercase font-semibold transition-colors duration-300">
               Discover our exquisite handcrafted masterpieces
             </p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-6 sm:gap-10">
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
             {[
               { name: "Rings", label: "Rings", img: "/cat_rings.png" },
               { name: "Necklaces", label: "Necklaces", img: "/cat_necklaces.png" },
@@ -1337,23 +1339,30 @@ export const Home = () => {
                 <Link
                   key={cat.name}
                   to={`/?category=${encodeURIComponent(cat.name)}`}
-                  className="group flex flex-col items-center focus:outline-none"
+                  className={`group flex flex-col items-center justify-center p-4 sm:p-5 rounded-2xl border transition-all duration-300 w-28 sm:w-36 focus:outline-none cursor-pointer ${
+                    isActive
+                      ? 'bg-[#3F1D5A]/5 dark:bg-[#1E293B] border-[#D4A75F] shadow-[0_0_15px_1px_rgba(212,167,95,0.3)] dark:shadow-[0_0_20px_rgba(212,167,95,0.2)]'
+                      : 'bg-white dark:bg-[#111827] border-[#F2E8D9] dark:border-[#2D3748] shadow-sm hover:scale-105 hover:border-[#D4A75F] hover:shadow-[0_0_15px_rgba(212,167,95,0.25)] dark:hover:shadow-[0_0_20px_rgba(212,167,95,0.35)]'
+                  }`}
                 >
-                  <div className={`relative w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 transition-all duration-300 transform group-hover:scale-105 category-gold-glow ${
-                    isActive 
-                      ? 'ring-2 ring-[#D4A75F] bg-[#3F1D5A]/5 shadow-[0_0_15px_1px_rgba(212,167,95,0.3)]' 
-                      : 'ring-1 ring-[#F2E8D9]'
+                  {/* Category Icon Circle */}
+                  <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center overflow-hidden border p-1 transition-all duration-300 ${
+                    isActive
+                      ? 'bg-white dark:bg-[#1E293B] border-[#D4A75F]'
+                      : 'bg-white dark:bg-[#1E293B] border-[#F2E8D9] dark:border-[#D4A75F] group-hover:border-[#D4A75F]'
                   }`}>
-                    <div className="w-full h-full rounded-full overflow-hidden bg-white shadow-md relative border border-[#F2E8D9]">
-                      <img
-                        src={cat.img}
-                        alt={cat.label}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                    </div>
+                    <img
+                      src={cat.img}
+                      alt={cat.label}
+                      className="w-full h-full object-cover rounded-full transition-transform duration-500 group-hover:scale-110"
+                    />
                   </div>
-                  <span className={`mt-3 text-xs sm:text-sm font-bold tracking-wide transition-colors duration-300 ${
-                    isActive ? 'text-[#D4A75F]' : 'text-slate-800 group-hover:text-[#3F1D5A]'
+                  
+                  {/* Category Name */}
+                  <span className={`mt-3 text-xs sm:text-sm font-bold tracking-wide transition-colors duration-300 text-center ${
+                    isActive 
+                      ? 'text-[#D4A75F]' 
+                      : 'text-slate-800 dark:text-[#F8FAFC] group-hover:text-[#D4A75F]'
                   }`}>
                     {cat.label}
                   </span>
