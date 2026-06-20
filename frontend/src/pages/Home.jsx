@@ -1056,9 +1056,9 @@ export const Home = () => {
   return (
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen pb-16">
 
-      {/* Hero Banner Slider Container */}
-      <div className="w-[94vw] max-w-[1800px] mx-auto mt-[24px] md:mt-[28px] lg:mt-[30px] mb-8">
-        <div className="relative h-[500px] sm:h-[600px] md:h-[680px] lg:h-[730px] xl:h-[780px] min-h-[500px] overflow-hidden rounded-[16px] md:rounded-[20px] lg:rounded-[24px] shadow-[0_20px_50px_rgba(27,11,38,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#D4A75F]/15 dark:border-white/5 bg-gradient-to-tr from-[#1B0B26] via-[#3F1D5A] to-[#2E1442]">
+      {/* Desktop Hero Banner Slider Container */}
+      <div className="hidden md:block w-[94vw] max-w-[1800px] mx-auto mt-[28px] lg:mt-[30px] mb-8">
+        <div className="relative h-[680px] lg:h-[730px] xl:h-[780px] min-h-[500px] overflow-hidden rounded-[20px] lg:rounded-[24px] shadow-[0_20px_50px_rgba(27,11,38,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#D4A75F]/15 dark:border-white/5 bg-gradient-to-tr from-[#1B0B26] via-[#3F1D5A] to-[#2E1442]">
           {isAdmin && (
             <Link
               to="/admin-control?tab=config"
@@ -1174,6 +1174,133 @@ export const Home = () => {
                   }`}
               />
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Hero Banner Slider Container (dedicated mobile layout for screens < 768px) */}
+      <div className="block md:hidden w-[94vw] mx-auto mt-[24px] mb-8">
+        <div className="relative h-auto min-h-auto overflow-hidden rounded-[16px] shadow-[0_20px_50px_rgba(27,11,38,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#D4A75F]/15 dark:border-white/5 bg-gradient-to-tr from-[#1B0B26] via-[#3F1D5A] to-[#2E1442]">
+          {isAdmin && (
+            <Link
+              to="/admin-control?tab=config"
+              className="absolute top-4 right-4 z-30 flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 active:bg-emerald-500/30 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 rounded-full text-[10px] font-bold backdrop-blur-md transition-all duration-300 hover:scale-105 shadow-sm cursor-pointer"
+            >
+              <Edit3 className="h-3 w-3" />
+              <span>Edit Banner</span>
+            </Link>
+          )}
+
+          {slides.map((slide, idx) => (
+            <div
+              key={idx}
+              className={`bg-gradient-to-tr ${slide.gradient} transition-opacity duration-1000 ${
+                idx === activeSlide 
+                  ? 'opacity-100 z-10 relative w-full h-auto' 
+                  : 'opacity-0 z-0 absolute inset-0 pointer-events-none'
+              }`}
+            >
+              {/* Premium Highlights, Lighting, and Gradients */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-[#1B0B26]/30 to-[#3F1D5A]/10 mix-blend-multiply opacity-90 pointer-events-none" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(212,167,95,0.15),transparent_50%)] pointer-events-none" />
+              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#D4A75F]/20 to-transparent pointer-events-none" />
+
+              {/* Spacing: Top Padding: 24px, Side Padding: 20px, Bottom Padding: 24px (extra bottom padding to clear navigation dots and arrows) */}
+              <div className="pt-[24px] px-[20px] pb-[76px] w-full text-white flex flex-col items-center text-center relative z-10">
+                
+                {/* 1. Category Badge */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-[#D4A75F]/15 text-[#D4A75F] border border-[#D4A75F]/30 w-fit mb-4 tracking-wide"
+                >
+                  <Sparkles className="h-3 w-3 animate-pulse" />
+                  {slide.badge}
+                </motion.div>
+
+                {/* 2. Headline */}
+                <motion.h1
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="text-[36px] sm:text-[40px] font-serif font-bold tracking-normal leading-[1.2] text-white mb-3 max-w-md break-words"
+                >
+                  {slide.title}
+                </motion.h1>
+
+                {/* 3. Subtitle */}
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="text-[16px] sm:text-[18px] font-serif text-[#D4A75F] mb-5 max-w-md break-words"
+                >
+                  {slide.subtitle}
+                </motion.p>
+
+                {/* 4. CTA Button */}
+                <motion.a
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={idx === activeSlide ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
+                  href={slide.btnLink || `/?category=${slide.catFilter}`}
+                  className="px-6 py-3 bg-[#D4A75F] text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-lg transition-transform active:scale-95 duration-300 w-fit flex items-center gap-2 cursor-pointer gold-shimmer-btn relative overflow-hidden mb-6"
+                >
+                  {slide.btnText}
+                </motion.a>
+
+                {/* 5. Product Image */}
+                {slide.image_url && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+                    transition={{ duration: 0.6, delay: 0.45 }}
+                    className="w-full flex items-center justify-center relative mt-2"
+                  >
+                    <div className="absolute inset-0 bg-[#D4A75F]/5 rounded-full blur-3xl -z-10 animate-pulse"></div>
+                    <img
+                      src={slide.image_url}
+                      alt={slide.title}
+                      className="w-full h-auto min-h-[220px] max-h-[320px] object-contain rounded-2xl shadow-xl filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]"
+                    />
+                  </motion.div>
+                )}
+
+              </div>
+            </div>
+          ))}
+
+          {/* Slider Arrows & Dots (placed at the bottom of the banner container near dots) */}
+          <div className="absolute bottom-4 inset-x-0 z-20 flex items-center justify-center gap-6">
+            {/* Prev Arrow */}
+            <button
+              onClick={handlePrevSlide}
+              className="p-2 rounded-full border border-[#D4A75F]/35 hover:border-[#D4A75F] bg-[#3F1D5A]/50 text-[#D4A75F] transition-all backdrop-blur-sm active:scale-90 cursor-pointer"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+
+            {/* Indicator dots */}
+            <div className="flex space-x-2">
+              {slides.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveSlide(idx)}
+                  className={`h-1.5 transition-all duration-300 rounded-full ${
+                    idx === activeSlide ? 'bg-[#D4A75F] w-6' : 'bg-white/30 hover:bg-white/50 w-1.5'
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Next Arrow */}
+            <button
+              onClick={handleNextSlide}
+              className="p-2 rounded-full border border-[#D4A75F]/35 hover:border-[#D4A75F] bg-[#3F1D5A]/50 text-[#D4A75F] transition-all backdrop-blur-sm active:scale-90 cursor-pointer"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </div>
