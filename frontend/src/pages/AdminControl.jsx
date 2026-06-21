@@ -1873,7 +1873,7 @@ export const AdminControl = () => {
           </div>
           <button
             onClick={loadDashboardData}
-            className="mt-4 sm:mt-0 px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-850 dark:hover:bg-slate-800 text-xs font-bold rounded-xl shadow-sm"
+            className="mt-4 sm:mt-0 px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-transparent dark:bg-[#1E1E1E] dark:border-[#D4A75F] text-slate-700 dark:text-[#D4A75F] dark:hover:bg-[#2A2A2A] rounded-[12px] dark:shadow-[0_4px_12px_rgba(212,167,95,0.25)] text-xs font-bold transition-all"
           >
             Refresh Data
           </button>
@@ -1938,60 +1938,60 @@ export const AdminControl = () => {
             <div className="flex space-x-2 border-b border-slate-200 dark:border-slate-800 pb-px mb-8 overflow-x-auto">
               <button
                 onClick={() => handleTabChange('products')}
-                className={`pb-3 px-4 text-sm font-bold border-b-2 transition-all whitespace-nowrap ${
+                className={`pb-3 px-4 text-sm border-b-2 transition-all whitespace-nowrap ${
                   activeTab === 'products'
-                    ? 'border-emerald-500 text-emerald-500'
-                    : 'border-transparent text-slate-400 hover:text-slate-600'
+                    ? 'bg-[rgba(212,167,95,0.15)] text-[#D4A75F] border-[#D4A75F] font-semibold'
+                    : 'border-transparent text-[#B0B7C3] hover:text-white font-normal'
                 }`}
               >
                 Product Management
               </button>
               <button
                 onClick={() => handleTabChange('users')}
-                className={`pb-3 px-4 text-sm font-bold border-b-2 transition-all whitespace-nowrap ${
+                className={`pb-3 px-4 text-sm border-b-2 transition-all whitespace-nowrap ${
                   activeTab === 'users'
-                    ? 'border-emerald-500 text-emerald-500'
-                    : 'border-transparent text-slate-400 hover:text-slate-600'
+                    ? 'bg-[rgba(212,167,95,0.15)] text-[#D4A75F] border-[#D4A75F] font-semibold'
+                    : 'border-transparent text-[#B0B7C3] hover:text-white font-normal'
                 }`}
               >
                 User Management
               </button>
               <button
                 onClick={() => handleTabChange('orders')}
-                className={`pb-3 px-4 text-sm font-bold border-b-2 transition-all whitespace-nowrap ${
+                className={`pb-3 px-4 text-sm border-b-2 transition-all whitespace-nowrap ${
                   activeTab === 'orders'
-                    ? 'border-emerald-500 text-emerald-500'
-                    : 'border-transparent text-slate-400 hover:text-slate-600'
+                    ? 'bg-[rgba(212,167,95,0.15)] text-[#D4A75F] border-[#D4A75F] font-semibold'
+                    : 'border-transparent text-[#B0B7C3] hover:text-white font-normal'
                 }`}
               >
                 Orders Management
               </button>
               <button
                 onClick={() => handleTabChange('support')}
-                className={`pb-3 px-4 text-sm font-bold border-b-2 transition-all whitespace-nowrap ${
+                className={`pb-3 px-4 text-sm border-b-2 transition-all whitespace-nowrap ${
                   activeTab === 'support'
-                    ? 'border-emerald-500 text-emerald-500'
-                    : 'border-transparent text-slate-400 hover:text-slate-600'
+                    ? 'bg-[rgba(212,167,95,0.15)] text-[#D4A75F] border-[#D4A75F] font-semibold'
+                    : 'border-transparent text-[#B0B7C3] hover:text-white font-normal'
                 }`}
               >
                 Support Tickets
               </button>
               <button
                 onClick={() => handleTabChange('config')}
-                className={`pb-3 px-4 text-sm font-bold border-b-2 transition-all whitespace-nowrap ${
+                className={`pb-3 px-4 text-sm border-b-2 transition-all whitespace-nowrap ${
                   activeTab === 'config'
-                    ? 'border-emerald-500 text-emerald-500'
-                    : 'border-transparent text-slate-400 hover:text-slate-600'
+                    ? 'bg-[rgba(212,167,95,0.15)] text-[#D4A75F] border-[#D4A75F] font-semibold'
+                    : 'border-transparent text-[#B0B7C3] hover:text-white font-normal'
                 }`}
               >
                 Site Configuration
               </button>
               <button
                 onClick={() => handleTabChange('overview')}
-                className={`pb-3 px-4 text-sm font-bold border-b-2 transition-all whitespace-nowrap ${
+                className={`pb-3 px-4 text-sm border-b-2 transition-all whitespace-nowrap ${
                   activeTab === 'overview'
-                    ? 'border-emerald-500 text-emerald-500'
-                    : 'border-transparent text-slate-400 hover:text-slate-600'
+                    ? 'bg-[rgba(212,167,95,0.15)] text-[#D4A75F] border-[#D4A75F] font-semibold'
+                    : 'border-transparent text-[#B0B7C3] hover:text-white font-normal'
                 }`}
               >
                 Analytics
@@ -2014,9 +2014,9 @@ export const AdminControl = () => {
                   </div>
                   <button 
                     onClick={loadDashboardData}
-                    className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-700 dark:text-slate-300 rounded-xl shadow-sm transition-all"
+                    className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold bg-white border border-slate-200 hover:bg-slate-50 dark:bg-[#1E1E1E] dark:border-[#D4A75F] dark:text-[#D4A75F] dark:hover:bg-[#2A2A2A] rounded-[12px] dark:shadow-[0_4px_12px_rgba(212,167,95,0.25)] transition-all"
                   >
-                    <RefreshCw className="h-3.5 w-3.5" />
+                    <RefreshCw className="h-3.5 w-3.5 text-slate-500 dark:text-[#D4A75F]" />
                     <span>Sync Real-Time Data</span>
                   </button>
                 </div>
@@ -2636,7 +2636,7 @@ export const AdminControl = () => {
                                 setEditProductImages(initEditImages(p));
                                 setIsEditImagesOpen(false);
                               }}
-                              className="py-2 px-2.5 text-[10px] font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-750 dark:text-slate-200 rounded-xl transition-all text-center flex items-center justify-center gap-1.5"
+                              className="py-2 px-2.5 text-[10px] font-bold bg-blue-50 hover:bg-blue-100 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-xl transition-all text-center flex items-center justify-center gap-1.5"
                             >
                               <Edit2 className="h-3.5 w-3.5" />
                               <span>Edit Product</span>
@@ -2650,14 +2650,14 @@ export const AdminControl = () => {
                             </button>
                             <button
                               onClick={() => handleOpenOrdersModal(p)}
-                              className="py-2 px-2.5 text-[10px] font-bold bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:hover:bg-indigo-500/20 text-indigo-650 dark:text-indigo-400 rounded-xl transition-all text-center flex items-center justify-center gap-1.5"
+                              className="py-2 px-2.5 text-[10px] font-bold bg-purple-50 hover:bg-purple-100 dark:bg-purple-500/10 dark:hover:bg-purple-500/20 text-purple-650 dark:text-purple-400 rounded-xl transition-all text-center flex items-center justify-center gap-1.5"
                             >
                               <ShoppingBag className="h-3.5 w-3.5" />
                               <span>View Orders</span>
                             </button>
                             <button
                               onClick={() => handleOpenAnalyticsModal(p)}
-                              className="py-2 px-2.5 text-[10px] font-bold bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-500/10 dark:hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-450 rounded-xl transition-all text-center flex items-center justify-center gap-1.5"
+                              className="py-2 px-2.5 text-[10px] font-bold border border-[#D4A75F]/35 dark:border-[#D4A75F] bg-[#D4A75F]/8 dark:bg-[rgba(212,167,95,0.12)] text-[#9A7232] dark:text-[#D4A75F] hover:bg-[#D4A75F] hover:text-white dark:hover:bg-[#D4A75F] dark:hover:text-white dark:hover:border-transparent hover:translate-y-[-2px] shadow-[0_4px_12px_rgba(212,167,95,0.08)] dark:shadow-[0_4px_12px_rgba(212,167,95,0.20)] rounded-xl transition-all duration-[250ms] ease-in-out text-center flex items-center justify-center gap-1.5"
                             >
                               <BarChart3 className="h-3.5 w-3.5" />
                               <span>View Sales</span>

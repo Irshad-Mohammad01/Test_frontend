@@ -1516,12 +1516,12 @@ export const ProductDetails = ({ productId }) => {
                     <span className="text-xl font-black text-slate-800 dark:text-slate-100">{salesData.total_sold || 0}</span>
                   </div>
                   <div className="bg-indigo-50/50 dark:bg-indigo-900/10 p-4 rounded-xl border border-indigo-100 dark:border-indigo-800/50">
-                    <span className="text-[10px] text-indigo-600 font-bold uppercase tracking-wider block mb-1">Revenue Generated</span>
-                    <span className="text-xl font-black text-indigo-600">₹{(analyticsData?.sales_stats?.revenue_generated ?? salesData?.total_revenue ?? 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                    <span className="text-[10px] text-indigo-600 dark:text-[#4ADE80] font-bold uppercase tracking-wider block mb-1">Revenue Generated</span>
+                    <span className="text-xl font-black text-indigo-600 dark:text-[#4ADE80]">₹{(analyticsData?.sales_stats?.revenue_generated ?? salesData?.total_revenue ?? 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="bg-emerald-50/50 dark:bg-emerald-900/10 p-4 rounded-xl border border-emerald-100 dark:border-emerald-800/50">
-                    <span className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider block mb-1">Conversion Rate</span>
-                    <span className="text-xl font-black text-emerald-600">3.8%</span>
+                  <div className="bg-emerald-50/50 dark:bg-[rgba(212,167,95,0.08)] p-4 rounded-xl border border-emerald-100 dark:border-[rgba(212,167,95,0.25)]">
+                    <span className="text-[10px] text-emerald-600 dark:text-[#D4A75F] font-bold dark:font-semibold uppercase tracking-wider dark:tracking-[0.08em] block mb-1">CONVERSION RATE</span>
+                    <span className="text-xl dark:text-[24px] font-black dark:font-bold text-emerald-600 dark:text-[#FFD700]">3.8%</span>
                   </div>
                 </div>
 

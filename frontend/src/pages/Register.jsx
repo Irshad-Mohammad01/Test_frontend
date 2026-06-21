@@ -37,18 +37,59 @@ export const Register = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [otpCode, setOtpCode] = useState('');
   const [verifyingOtp, setVerifyingOtp] = useState(false);
+  const [devOtp, setDevOtp] = useState('');
+  const [otpMode, setOtpMode] = useState('');
+
+  const [touched, setTouched] = useState({
+    name: false,
+    email: false,
+    password: false,
+    mobile: false
+  });
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    if (['name', 'email', 'password', 'mobile'].includes(name)) {
+      setTouched((prev) => ({
+        ...prev,
+        [name]: true
+      }));
+    }
+  };
+
+  const isEmailValid = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleChange = (e) => {
+    let { name, value } = e.target;
+    if (name === 'mobile') {
+      value = value.replace(/\D/g, '').slice(0, 10);
+    }
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
   };
 
   const handleSendOtp = async (e) => {
     if (e) e.preventDefault();
-    if (!formData.name || !formData.email || !formData.password || !formData.mobile) {
-      setError("Please fill in all the required fields: name, email, password, and mobile.");
+    
+    // Set all fields to touched to expose errors
+    setTouched({
+      name: true,
+      email: true,
+      password: true,
+      mobile: true
+    });
+
+    const isNameInvalid = !formData.name.trim();
+    const isMobileInvalid = formData.mobile.length !== 10;
+    const isEmailInvalidValue = !formData.email || !isEmailValid(formData.email);
+    const isPasswordInvalid = !formData.password;
+
+    if (isNameInvalid || isMobileInvalid || isEmailInvalidValue || isPasswordInvalid) {
+      setError("Please fill in all the required fields correctly.");
       return;
     }
 
@@ -71,6 +112,12 @@ export const Register = () => {
         address: address
       });
       setOtpSent(true);
+      if (response.data.otp) {
+        setDevOtp(response.data.otp);
+      }
+      if (response.data.otp_mode) {
+        setOtpMode(response.data.otp_mode);
+      }
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || "Failed to generate security OTP. Please try again.");
@@ -83,9 +130,15 @@ export const Register = () => {
     setLoading(true);
     setError('');
     try {
-      await axios.post(`${API_BASE_URL}/auth/resend-otp`, {
+      const response = await axios.post(`${API_BASE_URL}/auth/resend-otp`, {
         email: formData.email
       });
+      if (response.data.otp) {
+        setDevOtp(response.data.otp);
+      }
+      if (response.data.otp_mode) {
+        setOtpMode(response.data.otp_mode);
+      }
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || "Failed to resend verification OTP. Please try again.");
@@ -156,7 +209,7 @@ export const Register = () => {
         )}
 
         {!otpSent ? (
-          <form className="mt-8 space-y-6" onSubmit={handleSendOtp}>
+          <form className="mt-8 space-y-6" onSubmit={handleSendOtp} noValidate>
             <div className="space-y-4">
               
               {/* Primary Details Row */}
@@ -171,9 +224,15 @@ export const Register = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-slate-850 dark:text-slate-100"
                     />
                   </div>
+                  {touched.name && !formData.name.trim() && (
+                    <p className="mt-1 text-[11px] text-[#EF4444] font-semibold">
+                      Full Name is required.
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -186,8 +245,22 @@ export const Register = () => {
                       name="mobile"
                       value={formData.mobile}
                       onChange={handleChange}
-                      className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-slate-850 dark:text-slate-100"
+                      onBlur={handleBlur}
+                      className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-slate-850 dark:text-slate-100"
                     />
+                  </div>
+                  <div className="mt-1">
+                    {formData.mobile.length === 10 ? (
+                      <p className="text-[11px] text-[#22C55E] font-semibold flex items-center gap-1">
+                        ✓ Valid Mobile Number
+                      </p>
+                    ) : (
+                      touched.mobile && formData.mobile.length < 10 && (
+                        <p className="text-[11px] text-[#EF4444] font-semibold">
+                          Please enter a valid 10-digit mobile number.
+                        </p>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
@@ -202,9 +275,15 @@ export const Register = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-slate-850 dark:text-slate-100"
                   />
                 </div>
+                {touched.email && (!formData.email || !isEmailValid(formData.email)) && (
+                  <p className="mt-1 text-[11px] text-[#EF4444] font-semibold">
+                    Please enter a valid email address.
+                  </p>
+                )}
               </div>
 
               <div>
@@ -217,9 +296,15 @@ export const Register = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-slate-850 dark:text-slate-100"
+                    onBlur={handleBlur}
+                    className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-slate-850 dark:text-slate-100"
                   />
                 </div>
+                {touched.password && !formData.password && (
+                  <p className="mt-1 text-[11px] text-[#EF4444] font-semibold">
+                    Password is required.
+                  </p>
+                )}
               </div>
 
               {/* Address fields title */}
@@ -260,7 +345,7 @@ export const Register = () => {
                         name="state"
                         value={formData.state}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none"
+                        className="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none"
                       />
                     </div>
                     <div>
@@ -270,7 +355,7 @@ export const Register = () => {
                         name="pincode"
                         value={formData.pincode}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none"
+                        className="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none"
                       />
                     </div>
                   </div>
@@ -282,7 +367,7 @@ export const Register = () => {
             <button
               type="submit"
               disabled={loading || success}
-              className="w-full flex items-center justify-center space-x-2 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-bold shadow-md disabled:opacity-50 transition-all cursor-pointer"
+              className="w-full flex items-center justify-center space-x-2 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-bold shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
             >
               <UserPlus className="h-4 w-4" />
               <span>{loading ? 'Sending OTP...' : 'Send Verification OTP'}</span>
@@ -321,6 +406,18 @@ export const Register = () => {
                   {loading ? 'Sending...' : 'Resend OTP'}
                 </button>
               </div>
+
+              {otpMode === 'development' && devOtp && (
+                <div className="mt-4 p-4 bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 rounded-2xl text-center shadow-sm backdrop-blur-sm">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-1.5 rounded-full bg-amber-100 dark:bg-amber-950/40 border border-amber-300/30 text-[10px] font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                    Development Mode OTP
+                  </div>
+                  <div className="text-xs text-slate-600 dark:text-slate-350">
+                    Development OTP: <strong className="text-amber-700 dark:text-amber-400 text-base tracking-widest font-black ml-1 select-all">{devOtp}</strong>
+                  </div>
+                </div>
+              )}
 
               <div className="flex gap-4 pt-4 border-t border-slate-100 dark:border-slate-850">
                 <button

@@ -79,8 +79,8 @@ function App() {
                 <PageWrapper><MyOrders /></PageWrapper>
               </ProtectedRoute>
             } />
-            <Route path="/profile" element={
-              <ProtectedRoute>
+             <Route path="/profile" element={
+              <ProtectedRoute userOnly={true}>
                 <PageWrapper><Profile /></PageWrapper>
               </ProtectedRoute>
             } />

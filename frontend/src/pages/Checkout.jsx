@@ -222,18 +222,25 @@ export const Checkout = () => {
 
   const [validationError, setValidationError] = useState('');
   
+  const isEmailValid = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const handleGuestPhoneChange = (val) => {
+    const cleanVal = val.replace(/\D/g, '').slice(0, 10);
+    setShippingDetails(prev => ({ ...prev, phone: cleanVal }));
+  };
+
   const handleAlternateMobileChange = (val) => {
-    // Validate live
-    if (!val) {
+    const cleanVal = val.replace(/\D/g, '').slice(0, 10);
+    setAddressForm(prev => ({ ...prev, alternate_mobile_number: cleanVal }));
+    if (!cleanVal) {
       setValidationError('');
-    } else if (!/^\d+$/.test(val)) {
-      setValidationError(t('checkout_page.alternate_mobile_error_numeric') || 'Alternate Mobile Number must be numeric only.');
-    } else if (val.length !== 10) {
-      setValidationError(t('checkout_page.alternate_mobile_error_length') || 'Alternate Mobile Number must be exactly 10 digits.');
+    } else if (cleanVal.length < 10) {
+      setValidationError('Please enter a valid 10-digit mobile number.');
     } else {
       setValidationError('');
     }
-    setAddressForm(prev => ({ ...prev, alternate_mobile_number: val }));
   };
 
   // Manage addresses operations
@@ -256,14 +263,8 @@ export const Checkout = () => {
     }
 
     if (addressForm.alternate_mobile_number) {
-      if (!/^\d+$/.test(addressForm.alternate_mobile_number)) {
-        const errMsg = t('checkout_page.alternate_mobile_error_numeric') || 'Alternate Mobile Number must be numeric only.';
-        setValidationError(errMsg);
-        setError(errMsg);
-        return;
-      }
       if (addressForm.alternate_mobile_number.length !== 10) {
-        const errMsg = t('checkout_page.alternate_mobile_error_length') || 'Alternate Mobile Number must be exactly 10 digits.';
+        const errMsg = 'Please enter a valid 10-digit mobile number.';
         setValidationError(errMsg);
         setError(errMsg);
         return;
@@ -468,6 +469,14 @@ export const Checkout = () => {
         !shippingDetails.pincode?.trim()
       ) {
         setError(t('checkout_page.validation_error', { defaultValue: 'Please fill in all required fields.' }));
+        return;
+      }
+      if (shippingDetails.phone.replace(/\D/g, '').length !== 10) {
+        setError('Please enter a valid 10-digit mobile number.');
+        return;
+      }
+      if (!isEmailValid(shippingDetails.email)) {
+        setError('Please enter a valid email address.');
         return;
       }
     }
@@ -848,13 +857,21 @@ export const Checkout = () => {
                             type="text"
                             value={addressForm.alternate_mobile_number || ''}
                             onChange={(e) => handleAlternateMobileChange(e.target.value)}
-                            className={`w-full px-4 py-2.5 text-sm bg-white dark:bg-slate-900 border ${
-                              validationError ? 'border-rose-500 focus:ring-rose-500/50' : 'border-slate-200 dark:border-slate-800 focus:ring-emerald-500/50'
-                            } rounded-xl focus:outline-none focus:ring-2 text-slate-800 dark:text-slate-100`}
+                            className="w-full px-4 py-2.5 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D4A75F]/50 text-slate-800 dark:text-slate-100"
                             placeholder="e.g. 9829276750"
                           />
-                          {validationError && (
-                            <p className="text-rose-500 text-[10px] mt-1 font-semibold">{validationError}</p>
+                          {addressForm.alternate_mobile_number && (
+                            <div className="mt-1">
+                              {addressForm.alternate_mobile_number.length < 10 ? (
+                                <p className="text-[11px] text-[#EF4444] font-semibold">
+                                  Please enter a valid 10-digit mobile number.
+                                </p>
+                              ) : (
+                                <p className="text-[11px] text-[#22C55E] font-semibold flex items-center gap-1">
+                                  ✓ Valid Mobile Number
+                                </p>
+                              )}
+                            </div>
                           )}
                         </div>
                       </div>
@@ -930,7 +947,8 @@ export const Checkout = () => {
                         </button>
                         <button
                           type="submit"
-                          className="flex-1 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs shadow-md transition-colors"
+                          disabled={!!(addressForm.alternate_mobile_number && addressForm.alternate_mobile_number.length !== 10)}
+                          className="flex-1 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs shadow-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Save Address
                         </button>
@@ -1086,9 +1104,20 @@ export const Checkout = () => {
                         type="tel"
                         required
                         value={shippingDetails.phone}
-                        onChange={(e) => setShippingDetails({...shippingDetails, phone: e.target.value})}
+                        onChange={(e) => handleGuestPhoneChange(e.target.value)}
                         className="w-full px-4 py-3 text-base bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-slate-800 dark:text-slate-100"
                       />
+                      <div className="mt-1">
+                        {shippingDetails.phone.length < 10 ? (
+                          <p className="text-[11px] text-[#EF4444] font-semibold">
+                            Please enter a valid 10-digit mobile number.
+                          </p>
+                        ) : (
+                          <p className="text-[11px] text-[#22C55E] font-semibold flex items-center gap-1">
+                            ✓ Valid Mobile Number
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -1101,6 +1130,11 @@ export const Checkout = () => {
                       onChange={(e) => setShippingDetails({...shippingDetails, email: e.target.value})}
                       className="w-full px-4 py-3 text-base bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-slate-800 dark:text-slate-100"
                     />
+                    {shippingDetails.email && !isEmailValid(shippingDetails.email) && (
+                      <p className="mt-1 text-[11px] text-[#EF4444] font-semibold">
+                        Please enter a valid email address.
+                      </p>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800 pt-4">
@@ -1222,7 +1256,8 @@ export const Checkout = () => {
 
                   <button
                     type="submit"
-                    className="w-full flex items-center justify-center space-x-2 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-bold shadow-md hover:scale-[1.01] transition-all"
+                    disabled={shippingDetails.phone.length !== 10 || !isEmailValid(shippingDetails.email)}
+                    className="w-full flex items-center justify-center space-x-2 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-bold shadow-md hover:scale-[1.01] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <span>{t('checkout_page.continue_payment')}</span>
                     <ArrowRight className="h-4 w-4" />

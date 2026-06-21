@@ -39,8 +39,14 @@ export const Profile = () => {
   useEffect(() => {
     if (!user) {
       navigate('/login?redirect=profile');
+    } else if (user.is_admin) {
+      navigate('/admin');
     }
   }, [user, navigate]);
+
+  const isEmailValid = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   // Profile states
   const [profileName, setProfileName] = useState(user?.name || '');
@@ -52,6 +58,7 @@ export const Profile = () => {
   const [pincode, setPincode] = useState(user?.address?.pincode || '');
   const [alternateMobile, setAlternateMobile] = useState(user?.address?.alternate_mobile_number || '');
   const [validationError, setValidationError] = useState('');
+  const [profileMobileError, setProfileMobileError] = useState('');
   const [profileLoading, setProfileLoading] = useState(false);
   const [profileMessage, setProfileMessage] = useState('');
   const [profileError, setProfileError] = useState('');
@@ -92,6 +99,19 @@ export const Profile = () => {
       setPincode(user.address?.pincode || '');
       setAlternateMobile(user.address?.alternate_mobile_number || '');
       setPrefLang(user.preferred_language || language || 'en');
+      // validate
+      if (user.mobile && user.mobile.length === 10) {
+        setProfileMobileError('');
+      } else {
+        setProfileMobileError('Please enter a valid 10-digit mobile number.');
+      }
+      if (user.address?.alternate_mobile_number && user.address.alternate_mobile_number.length === 10) {
+        setValidationError('');
+      } else if (user.address?.alternate_mobile_number) {
+        setValidationError('Please enter a valid 10-digit mobile number.');
+      } else {
+        setValidationError('');
+      }
     }
   }, [user, language]);
 
@@ -135,14 +155,23 @@ export const Profile = () => {
     }
   }, [user, token]);
 
+  const handleProfileMobileChange = (val) => {
+    const cleanVal = val.replace(/\D/g, '').slice(0, 10);
+    setProfileMobile(cleanVal);
+    if (cleanVal.length < 10) {
+      setProfileMobileError('Please enter a valid 10-digit mobile number.');
+    } else {
+      setProfileMobileError('');
+    }
+  };
+
   const handleAlternateMobileChange = (val) => {
-    setAlternateMobile(val);
-    if (!val) {
+    const cleanVal = val.replace(/\D/g, '').slice(0, 10);
+    setAlternateMobile(cleanVal);
+    if (!cleanVal) {
       setValidationError('');
-    } else if (!/^\d*$/.test(val)) {
-      setValidationError('Alternate Mobile Number must contain only numeric values.');
-    } else if (val.length !== 10) {
-      setValidationError('Alternate Mobile Number must be exactly 10 digits.');
+    } else if (cleanVal.length < 10) {
+      setValidationError('Please enter a valid 10-digit mobile number.');
     } else {
       setValidationError('');
     }
@@ -150,15 +179,17 @@ export const Profile = () => {
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
-    if (validationError) {
-      setProfileError(validationError);
+    if (profileMobileError || validationError) {
+      setProfileError(profileMobileError || validationError);
       return;
     }
-    if (alternateMobile) {
-      if (!/^\d{10}$/.test(alternateMobile)) {
-        setProfileError("Alternate Mobile Number must be exactly 10 digits and numeric only.");
-        return;
-      }
+    if (!profileMobile || profileMobile.length !== 10) {
+      setProfileError("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+    if (alternateMobile && alternateMobile.length !== 10) {
+      setProfileError("Please enter a valid 10-digit alternate mobile number.");
+      return;
     }
     setProfileLoading(true);
     setProfileMessage('');
@@ -430,19 +461,30 @@ export const Profile = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-455 uppercase mb-1">Mobile Number</label>
+                    <label className="block text-xs font-bold text-slate-455 uppercase mb-1">Mobile Number *</label>
                     <input
                       type="tel"
                       required
                       value={profileMobile}
-                      onChange={(e) => setProfileMobile(e.target.value)}
+                      onChange={(e) => handleProfileMobileChange(e.target.value)}
                       className="w-full px-4 py-3 text-sm bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#D4A75F] text-slate-800 dark:text-white"
                     />
+                    <div className="mt-1">
+                      {profileMobile.length < 10 ? (
+                        <p className="text-[11px] text-[#EF4444] font-semibold">
+                          Please enter a valid 10-digit mobile number.
+                        </p>
+                      ) : (
+                        <p className="text-[11px] text-[#22C55E] font-semibold flex items-center gap-1">
+                          ✓ Valid Mobile Number
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-455 uppercase mb-1">Email Address</label>
+                  <label className="block text-xs font-bold text-slate-455 uppercase mb-1">Email Address *</label>
                   <input
                     type="email"
                     required
@@ -450,6 +492,11 @@ export const Profile = () => {
                     onChange={(e) => setProfileEmail(e.target.value)}
                     className="w-full px-4 py-3 text-sm bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#D4A75F] text-slate-800 dark:text-white"
                   />
+                  {(!profileEmail || !isEmailValid(profileEmail)) && (
+                    <p className="mt-1 text-[11px] text-[#EF4444] font-semibold">
+                      Please enter a valid email address.
+                    </p>
+                  )}
                 </div>
 
                 {/* 2. Address Management */}
@@ -458,7 +505,7 @@ export const Profile = () => {
                   
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-xs font-bold text-slate-450 mb-1">Street Address</label>
+                      <label className="block text-xs font-bold text-slate-455 mb-1">Street Address</label>
                       <input
                         type="text"
                         placeholder="e.g. Flat 104, Block B, Green Apartments"
@@ -469,7 +516,7 @@ export const Profile = () => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-450 mb-1">Alternate Mobile (Optional)</label>
+                      <label className="block text-xs font-bold text-slate-455 mb-1">Alternate Mobile (Optional)</label>
                       <input
                         type="text"
                         value={alternateMobile || ''}
@@ -479,14 +526,24 @@ export const Profile = () => {
                         } rounded-xl focus:outline-none focus:ring-1 text-slate-800 dark:text-white`}
                         placeholder="e.g. 9829276750"
                       />
-                      {validationError && (
-                        <p className="text-rose-500 text-[10px] mt-1 font-semibold">{validationError}</p>
+                      {alternateMobile && (
+                        <div className="mt-1">
+                          {alternateMobile.length < 10 ? (
+                            <p className="text-[11px] text-[#EF4444] font-semibold">
+                              Please enter a valid 10-digit mobile number.
+                            </p>
+                          ) : (
+                            <p className="text-[11px] text-[#22C55E] font-semibold flex items-center gap-1">
+                              ✓ Valid Mobile Number
+                            </p>
+                          )}
+                        </div>
                       )}
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <div>
-                        <label className="block text-xs font-bold text-slate-450 mb-1">City</label>
+                        <label className="block text-xs font-bold text-slate-455 mb-1">City</label>
                         <input
                           type="text"
                           placeholder="Bengaluru"
@@ -496,7 +553,7 @@ export const Profile = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-450 mb-1">State</label>
+                        <label className="block text-xs font-bold text-slate-455 mb-1">State</label>
                         <input
                           type="text"
                           placeholder="Karnataka"
@@ -521,8 +578,8 @@ export const Profile = () => {
 
                 <button
                   type="submit"
-                  disabled={profileLoading}
-                  className="px-6 py-2.5 bg-[#3F1D5A] hover:bg-[#D4A75F] text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
+                  disabled={profileLoading || !profileName.trim() || !isEmailValid(profileEmail) || profileMobile.length !== 10 || (alternateMobile && alternateMobile.length !== 10)}
+                  className="px-6 py-2.5 bg-[#3F1D5A] hover:bg-[#D4A75F] text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {profileLoading ? 'Saving...' : 'Update Settings & Address'}
                 </button>

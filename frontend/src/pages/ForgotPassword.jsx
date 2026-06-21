@@ -15,6 +15,8 @@ export const ForgotPassword = () => {
 
   // 6-digit OTP array
   const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
+  const [devOtp, setDevOtp] = useState('');
+  const [otpMode, setOtpMode] = useState('');
 
   // Auto-focus first OTP input on step 2 load
   useEffect(() => {
@@ -44,6 +46,12 @@ export const ForgotPassword = () => {
       setStep(2);
       // Store email/mobile temporarily for verify and resend
       sessionStorage.setItem('reset_pending_email', response.data.email || emailOrMobile.trim());
+      if (response.data.otp) {
+        setDevOtp(response.data.otp);
+      }
+      if (response.data.otp_mode) {
+        setOtpMode(response.data.otp_mode);
+      }
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || "Account not found. Please register first.");
@@ -144,6 +152,12 @@ export const ForgotPassword = () => {
       setSuccessMessage(response.data.message || "OTP code resent successfully!");
       // Reset input fields
       setOtpDigits(['', '', '', '', '', '']);
+      if (response.data.otp) {
+        setDevOtp(response.data.otp);
+      }
+      if (response.data.otp_mode) {
+        setOtpMode(response.data.otp_mode);
+      }
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || "Failed to resend verification code.");
@@ -305,6 +319,18 @@ export const ForgotPassword = () => {
                   />
                 ))}
               </div>
+
+              {otpMode === 'development' && devOtp && (
+                <div className="mt-4 p-4 bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 rounded-2xl text-center shadow-sm backdrop-blur-sm">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-1.5 rounded-full bg-amber-100 dark:bg-amber-950/40 border border-amber-300/30 text-[10px] font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                    Development Mode OTP
+                  </div>
+                  <div className="text-xs text-slate-600 dark:text-slate-350">
+                    Development OTP: <strong className="text-amber-700 dark:text-amber-400 text-base tracking-widest font-black ml-1 select-all">{devOtp}</strong>
+                  </div>
+                </div>
+              )}
 
               <div className="flex gap-4 mt-5">
                 <button

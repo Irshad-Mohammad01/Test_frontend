@@ -351,7 +351,7 @@ export const MyOrders = () => {
               onClick={() => setActiveTab('orders')}
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
                 activeTab === 'orders'
-                  ? 'bg-[#3F1D5A] text-white shadow-md'
+                  ? 'bg-[#D4A75F] text-white shadow-md'
                   : 'bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-850 text-slate-700 dark:text-slate-300 border border-slate-200/50 dark:border-slate-800/50'
               }`}
             >
@@ -363,7 +363,7 @@ export const MyOrders = () => {
               onClick={() => setActiveTab('buy-requests')}
               className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${
                 activeTab === 'buy-requests'
-                  ? 'bg-[#3F1D5A] text-white shadow-md'
+                  ? 'bg-[#D4A75F] text-white shadow-md'
                   : 'bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-850 text-slate-700 dark:text-slate-300 border border-slate-200/50 dark:border-slate-800/50'
               }`}
             >
@@ -382,7 +382,7 @@ export const MyOrders = () => {
               onClick={() => setActiveTab('wishlist')}
               className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${
                 activeTab === 'wishlist'
-                  ? 'bg-[#3F1D5A] text-white shadow-md'
+                  ? 'bg-[#D4A75F] text-white shadow-md'
                   : 'bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-850 text-slate-700 dark:text-slate-300 border border-slate-200/50 dark:border-slate-800/50'
               }`}
             >
@@ -399,7 +399,7 @@ export const MyOrders = () => {
               onClick={() => setActiveTab('saved')}
               className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${
                 activeTab === 'saved'
-                  ? 'bg-[#3F1D5A] text-white shadow-md'
+                  ? 'bg-[#D4A75F] text-white shadow-md'
                   : 'bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-850 text-slate-700 dark:text-slate-300 border border-slate-200/50 dark:border-slate-800/50'
               }`}
             >

@@ -618,30 +618,39 @@ export const Navbar = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.95 }}
                         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                        className="absolute right-0 mt-2 w-52 bg-white dark:bg-slate-800 border border-[#F2E8D9] dark:border-slate-700 rounded-2xl shadow-xl py-2 z-50 origin-top-right overflow-hidden"
+                        className="absolute right-0 mt-2 w-52 bg-white dark:bg-[#121826] border border-[#F2E8D9] dark:border-[rgba(212,167,95,0.25)] rounded-2xl shadow-xl dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] py-2 z-50 origin-top-right overflow-hidden"
                       >
-                      <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-700">
+                      <div className="px-4 py-2 border-b border-slate-100 dark:border-[rgba(212,167,95,0.15)]">
                         <p className="text-xs text-slate-400">{language === 'hi' ? 'पंजीकृत ईमेल' : 'Signed in as'}</p>
-                        <p className="text-sm font-bold text-[#1F1F1F] dark:text-slate-100 truncate">{user.email}</p>
+                        <p className="text-sm font-bold text-[#1F1F1F] dark:text-white truncate">{user.email}</p>
                       </div>
 
-                      {isAdmin ? null : (
+                      {isAdmin ? (
+                        <Link
+                          to="/admin"
+                          onClick={() => setProfileDropdownOpen(false)}
+                          className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#3F1D5A] dark:text-white hover:bg-slate-50 dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
+                        >
+                          <Shield className="h-4 w-4 opacity-75 text-[#3F1D5A] dark:text-[#D4A75F]" />
+                          <span>Admin Panel</span>
+                        </Link>
+                      ) : (
                         <>
                           <Link
                             to="/profile"
                             onClick={() => setProfileDropdownOpen(false)}
-                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] dark:text-slate-305 hover:bg-slate-50 dark:hover:bg-slate-705 transition-colors"
+                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] dark:text-white hover:bg-slate-50 dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
                           >
-                            <User className="h-4 w-4 opacity-75 text-[#3F1D5A]" />
+                            <User className="h-4 w-4 opacity-75 text-[#3F1D5A] dark:text-[#D4A75F]" />
                             <span>{language === 'hi' ? 'मेरी प्रोफ़ाइल' : 'My Profile'}</span>
                           </Link>
 
                           <Link
                             to="/profile"
                             onClick={() => setProfileDropdownOpen(false)}
-                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] dark:text-slate-305 hover:bg-slate-50 dark:hover:bg-slate-705 transition-colors"
+                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] dark:text-white hover:bg-slate-50 dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
                           >
-                            <Settings className="h-4 w-4 opacity-75 text-[#3F1D5A]" />
+                            <Settings className="h-4 w-4 opacity-75 text-[#3F1D5A] dark:text-[#D4A75F]" />
                             <span>{language === 'hi' ? 'खाता सेटिंग्स' : 'Account Settings'}</span>
                           </Link>
                         </>
@@ -653,9 +662,9 @@ export const Navbar = () => {
                           logout();
                           navigate('/');
                         }}
-                        className="w-full flex items-center space-x-2 px-4 py-2.5 text-sm text-red-500 hover:bg-[#FAFAFA] dark:hover:bg-slate-705 transition-colors text-left cursor-pointer bg-transparent border-none"
+                        className="w-full flex items-center space-x-2 px-4 py-2.5 text-sm text-red-500 hover:bg-[#FAFAFA] dark:text-white dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200 text-left cursor-pointer bg-transparent border-none"
                       >
-                        <LogOut className="h-4 w-4" />
+                        <LogOut className="h-4 w-4 text-red-500 dark:text-[#D4A75F]" />
                         <span>{t('navbar.sign_out')}</span>
                       </button>
                       </motion.div>
@@ -773,39 +782,41 @@ export const Navbar = () => {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 8, scale: 0.95 }}
                           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                          className="absolute right-0 mt-8 w-48 bg-white dark:bg-slate-800 border border-[#F2E8D9] dark:border-slate-700 rounded-2xl shadow-xl py-2 z-50 origin-top-right overflow-hidden"
+                          className="absolute right-0 mt-8 w-48 bg-white dark:bg-[#121826] border border-[#F2E8D9] dark:border-[rgba(212,167,95,0.25)] rounded-2xl shadow-xl dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] py-2 z-50 origin-top-right overflow-hidden"
                         >
-                        <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-700">
-                          <p className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">{user.name}</p>
+                        <div className="px-4 py-2 border-b border-slate-100 dark:border-[rgba(212,167,95,0.15)]">
+                          <p className="text-xs font-bold text-slate-700 dark:text-white truncate">{user.name}</p>
                           <p className="text-[10px] text-slate-400 truncate">{user.email}</p>
                         </div>
                         {isAdmin && (
                           <Link
                             to="/admin"
                             onClick={() => setMobileProfileOpen(false)}
-                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#3F1D5A] dark:text-[#D4A75F] hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#3F1D5A] hover:bg-slate-50 dark:text-white dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
                           >
-                            <Shield className="h-4 w-4" />
+                            <Shield className="h-4 w-4 text-[#3F1D5A] dark:text-[#D4A75F]" />
                             <span>Admin Panel</span>
                           </Link>
                         )}
-                        <Link
-                          to="/profile"
-                          onClick={() => setMobileProfileOpen(false)}
-                          className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
-                        >
-                          <User className="h-4 w-4 text-[#3F1D5A] dark:text-[#D4A75F]" />
-                          <span>{language === 'hi' ? 'मेरी प्रोफ़ाइल' : 'My Profile'}</span>
-                        </Link>
+                        {!isAdmin && (
+                          <Link
+                            to="/profile"
+                            onClick={() => setMobileProfileOpen(false)}
+                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] hover:bg-slate-50 dark:text-white dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
+                          >
+                            <User className="h-4 w-4 text-[#3F1D5A] dark:text-[#D4A75F]" />
+                            <span>{language === 'hi' ? 'मेरी प्रोफ़ाइल' : 'My Profile'}</span>
+                          </Link>
+                        )}
                         <button
                           onClick={() => {
                             setMobileProfileOpen(false);
                             logout();
                             navigate('/');
                           }}
-                          className="w-full flex items-center space-x-2 px-4 py-2.5 text-sm text-red-500 hover:bg-[#FAFAFA] dark:hover:bg-slate-700 transition-colors text-left cursor-pointer bg-transparent border-none"
+                          className="w-full flex items-center space-x-2 px-4 py-2.5 text-sm text-red-500 hover:bg-[#FAFAFA] dark:text-white dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200 text-left cursor-pointer bg-transparent border-none"
                         >
-                          <LogOut className="h-4 w-4" />
+                          <LogOut className="h-4 w-4 text-red-500 dark:text-[#D4A75F]" />
                           <span>{t('navbar.sign_out')}</span>
                         </button>
                         </motion.div>

@@ -1058,7 +1058,7 @@ export const Home = () => {
 
       {/* Desktop Hero Banner Slider Container */}
       <div className="hidden md:block w-[94vw] max-w-[1800px] mx-auto mt-[28px] lg:mt-[30px] mb-8">
-        <div className="relative h-[680px] lg:h-[730px] xl:h-[780px] min-h-[500px] overflow-hidden rounded-[20px] lg:rounded-[24px] shadow-[0_20px_50px_rgba(27,11,38,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#D4A75F]/15 dark:border-white/5 bg-gradient-to-tr from-[#1B0B26] via-[#3F1D5A] to-[#2E1442]">
+        <div className="relative h-[480px] lg:h-[580px] xl:h-[620px] min-h-[450px] overflow-hidden rounded-[20px] lg:rounded-[24px] shadow-[0_20px_50px_rgba(27,11,38,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#D4A75F]/15 dark:border-white/5 bg-gradient-to-tr from-[#1B0B26] via-[#3F1D5A] to-[#2E1442]">
           {isAdmin && (
             <Link
               to="/admin-control?tab=config"
@@ -1105,7 +1105,7 @@ export const Home = () => {
                       initial={{ opacity: 0, y: 15 }}
                       animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
                       transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#D4A75F]/15 text-[#D4A75F] border border-[#D4A75F]/30 w-fit mb-6 tracking-wide"
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#D4A75F]/15 text-[#D4A75F] border border-[#D4A75F]/30 w-fit mb-4 tracking-wide"
                     >
                       <Sparkles className="h-3.5 w-3.5 animate-pulse" />
                       {slide.badge}
@@ -1114,7 +1114,7 @@ export const Home = () => {
                       initial={{ opacity: 0, y: 25 }}
                       animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
                       transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                      className="text-4xl sm:text-6xl font-serif font-bold tracking-normal leading-tight text-white mb-4"
+                      className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-serif font-bold tracking-normal leading-tight text-white mb-3"
                     >
                       {slide.title}
                     </motion.h1>
@@ -1122,7 +1122,7 @@ export const Home = () => {
                       initial={{ opacity: 0, y: 15 }}
                       animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
                       transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                      className="text-xl sm:text-2xl font-serif text-[#D4A75F] mb-4"
+                      className="text-lg md:text-xl lg:text-2xl font-serif text-[#D4A75F] mb-3"
                     >
                       {slide.subtitle}
                     </motion.p>
@@ -1130,7 +1130,7 @@ export const Home = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                       transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                      className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-8 max-w-xl hidden sm:block"
+                      className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6 max-w-xl hidden sm:block"
                     >
                       {slide.desc}
                     </motion.p>
@@ -1157,7 +1157,7 @@ export const Home = () => {
                         src={slide.image_url}
                         alt={slide.title}
                         draggable="false"
-                        className="max-h-[350px] md:max-h-[620px] lg:max-h-[680px] xl:max-h-[730px] w-auto max-w-[95%] object-contain rounded-3xl shadow-2xl transition-all duration-700 hover:scale-105 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] animate-float-slow select-none"
+                        className="max-h-[320px] md:max-h-[440px] lg:max-h-[500px] xl:max-h-[550px] w-auto max-w-[95%] object-contain rounded-3xl shadow-2xl transition-all duration-700 hover:scale-105 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] animate-float-slow select-none"
                       />
                     </motion.div>
                   )}
@@ -1167,7 +1167,7 @@ export const Home = () => {
           </motion.div>
 
           {/* Indicator dots */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex space-x-3">
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex space-x-3">
             {slides.map((_, idx) => (
               <button
                 key={idx}
@@ -1182,7 +1182,7 @@ export const Home = () => {
 
       {/* Mobile Hero Banner Slider Container (dedicated mobile layout for screens < 768px) */}
       <div className="block md:hidden w-[94vw] mx-auto mt-[24px] mb-8">
-        <div className="relative h-auto min-h-auto overflow-hidden rounded-[16px] shadow-[0_20px_50px_rgba(27,11,38,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#D4A75F]/15 dark:border-white/5 bg-gradient-to-tr from-[#1B0B26] via-[#3F1D5A] to-[#2E1442]">
+        <div className="relative h-[390px] xs:h-[420px] sm:h-[440px] overflow-hidden rounded-[16px] shadow-[0_20px_50px_rgba(27,11,38,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#D4A75F]/15 dark:border-white/5 bg-gradient-to-tr from-[#1B0B26] via-[#3F1D5A] to-[#2E1442]">
           {isAdmin && (
             <Link
               to="/admin-control?tab=config"
@@ -1210,10 +1210,10 @@ export const Home = () => {
             {slides.map((slide, idx) => (
               <div
                 key={idx}
-                className={`bg-gradient-to-tr ${slide.gradient} transition-opacity duration-1000 ${
+                className={`absolute inset-0 bg-gradient-to-tr ${slide.gradient} transition-opacity duration-1000 ${
                   idx === activeSlide 
-                    ? 'opacity-100 z-10 relative w-full h-auto' 
-                    : 'opacity-0 z-0 absolute inset-0 pointer-events-none'
+                    ? 'opacity-100 z-10' 
+                    : 'opacity-0 z-0 pointer-events-none'
                 }`}
               >
                 {/* Premium Highlights, Lighting, and Gradients */}
@@ -1221,65 +1221,56 @@ export const Home = () => {
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(212,167,95,0.15),transparent_50%)] pointer-events-none" />
                 <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#D4A75F]/20 to-transparent pointer-events-none" />
 
-                {/* Spacing: Top Padding: 24px, Side Padding: 20px, Bottom Padding: 24px (extra bottom padding to clear navigation dots and arrows) */}
-                <div className="pt-[24px] px-[20px] pb-[76px] w-full text-white flex flex-col items-center text-center relative z-10">
+                <div className="h-full flex flex-col items-center justify-between text-center pt-5 pb-8 px-4 text-white z-10 relative">
                   
-                  {/* 1. Category Badge */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-[#D4A75F]/15 text-[#D4A75F] border border-[#D4A75F]/30 w-fit mb-4 tracking-wide"
-                  >
-                    <Sparkles className="h-3 w-3 animate-pulse" />
-                    {slide.badge}
-                  </motion.div>
+                  {/* Top Portion: Title and Subtitle */}
+                  <div className="flex flex-col items-center">
+                    <motion.h1
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                      className="text-[28px] xs:text-[32px] sm:text-[36px] font-serif font-bold tracking-normal leading-[1.2] text-white mb-1.5 max-w-[280px] xs:max-w-md break-words animate-in fade-in"
+                    >
+                      {slide.title}
+                    </motion.h1>
+                    
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
+                      className="text-[14px] xs:text-[15px] sm:text-[16px] font-serif text-[#D4A75F] max-w-[280px] xs:max-w-md break-words"
+                    >
+                      {slide.subtitle}
+                    </motion.p>
+                  </div>
 
-                  {/* 2. Headline */}
-                  <motion.h1
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    className="text-[36px] sm:text-[40px] font-serif font-bold tracking-normal leading-[1.2] text-white mb-3 max-w-md break-words"
-                  >
-                    {slide.title}
-                  </motion.h1>
+                  {/* Middle Portion: CTA Button */}
+                  <div className="my-2">
+                    <motion.a
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={idx === activeSlide ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.4, delay: 0.4 }}
+                      href={slide.btnLink || `/?category=${slide.catFilter}`}
+                      className="px-5 py-2 bg-[#D4A75F] text-white font-bold text-[11px] uppercase tracking-wider rounded-full shadow-lg transition-transform active:scale-95 duration-300 w-fit flex items-center gap-1.5 cursor-pointer gold-shimmer-btn relative overflow-hidden"
+                    >
+                      {slide.btnText}
+                    </motion.a>
+                  </div>
 
-                  {/* 3. Subtitle */}
-                  <motion.p
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="text-[16px] sm:text-[18px] font-serif text-[#D4A75F] mb-5 max-w-md break-words"
-                  >
-                    {slide.subtitle}
-                  </motion.p>
-
-                  {/* 4. CTA Button */}
-                  <motion.a
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={idx === activeSlide ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.4, delay: 0.4 }}
-                    href={slide.btnLink || `/?category=${slide.catFilter}`}
-                    className="px-6 py-3 bg-[#D4A75F] text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-lg transition-transform active:scale-95 duration-300 w-fit flex items-center gap-2 cursor-pointer gold-shimmer-btn relative overflow-hidden mb-6"
-                  >
-                    {slide.btnText}
-                  </motion.a>
-
-                  {/* 5. Product Image */}
+                  {/* Bottom Portion: Product Image */}
                   {slide.image_url && (
                     <motion.div
                       initial={{ opacity: 0, y: 15 }}
                       animate={idx === activeSlide ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
                       transition={{ duration: 0.6, delay: 0.45 }}
-                      className="w-full flex items-center justify-center relative mt-2"
+                      className="w-full flex items-center justify-center relative flex-1 min-h-0 mt-2"
                     >
                       <div className="absolute inset-0 bg-[#D4A75F]/5 rounded-full blur-3xl -z-10 animate-pulse"></div>
                       <img
                         src={slide.image_url}
                         alt={slide.title}
                         draggable="false"
-                        className="w-full h-auto min-h-[220px] max-h-[320px] object-contain rounded-2xl shadow-xl filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] select-none"
+                        className="h-full max-h-[140px] xs:max-h-[160px] sm:max-h-[180px] w-auto object-contain rounded-xl filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.4)] select-none"
                       />
                     </motion.div>
                   )}
@@ -1288,22 +1279,19 @@ export const Home = () => {
               </div>
             ))}
           </motion.div>
+        </div>
 
-          {/* Slider Dots */}
-          <div className="absolute bottom-4 inset-x-0 z-30 flex items-center justify-center gap-6">
-            {/* Indicator dots */}
-            <div className="flex space-x-2">
-              {slides.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveSlide(idx)}
-                  className={`h-1.5 transition-all duration-300 rounded-full cursor-pointer ${
-                    idx === activeSlide ? 'bg-[#D4A75F] w-6' : 'bg-slate-350 hover:bg-slate-200 w-1.5'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
+        {/* Small elegant indicators centered below the mobile banner */}
+        <div className="mt-4 flex items-center justify-center gap-2">
+          {slides.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveSlide(idx)}
+              className={`h-1.5 transition-all duration-300 rounded-full cursor-pointer ${
+                idx === activeSlide ? 'bg-[#D4A75F] w-6' : 'bg-slate-350 dark:bg-slate-800 hover:bg-slate-200 w-1.5'
+              }`}
+            />
+          ))}
         </div>
       </div>
 
@@ -1432,7 +1420,7 @@ export const Home = () => {
             {isAdmin && (
               <Link
                 to="/admin-control"
-                className="flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white dark:bg-white dark:text-slate-900 rounded-xl text-xs font-bold shadow-md hover:bg-slate-800 dark:hover:bg-slate-100 transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white border border-slate-900 dark:bg-[#1E1E1E] dark:border-[#D4A75F] dark:text-[#FFFFFF] rounded-xl text-xs font-bold shadow-md hover:bg-slate-800 dark:hover:bg-[#2A2A2A] dark:hover:border-[#D4A75F] dark:shadow-[0_4px_15px_rgba(212,167,95,0.25)] transition-all cursor-pointer"
                 id="admin-control-btn"
               >
                 <span>Admin Control</span>
