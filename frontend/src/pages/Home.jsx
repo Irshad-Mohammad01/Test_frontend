@@ -24,7 +24,7 @@ const ACTION_TYPES = [
 ];
 
 const BannerSkeleton = () => (
-  <div className="relative h-[480px] lg:h-[580px] xl:h-[620px] min-h-[450px] overflow-hidden rounded-[20px] lg:rounded-[24px] bg-[#1B0B26] border border-[#D4A75F]/15">
+  <div className="relative h-[480px] lg:h-[680px] xl:h-[740px] min-h-[450px] overflow-hidden rounded-[16px] lg:rounded-[20px] bg-[#1B0B26] border border-[#D4A75F]/15">
     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skeleton-premium animate-pulse" />
     <div className="px-8 sm:px-14 md:px-20 w-full py-6 md:py-8 flex flex-col md:flex-row items-center justify-between h-full relative gap-8 z-10">
       <div className="w-full md:w-[48%] flex-none flex flex-col justify-center text-left md:pl-6 lg:pl-10">
@@ -35,7 +35,7 @@ const BannerSkeleton = () => (
         <div className="h-4 w-4/6 bg-slate-800 rounded-lg mb-6 animate-pulse" />
         <div className="h-12 w-40 bg-slate-800 rounded-full animate-pulse" />
       </div>
-      <div className="w-full md:w-[52%] h-[320px] md:h-[440px] lg:h-[500px] xl:h-[550px] flex items-center justify-center relative">
+      <div className="w-full md:w-[52%] h-[320px] md:h-[440px] lg:h-[600px] xl:h-[650px] flex items-center justify-center relative">
         <div className="w-[85%] h-[85%] bg-slate-800 rounded-3xl animate-pulse" />
       </div>
     </div>
@@ -67,9 +67,9 @@ const CategorySkeleton = () => (
       </div>
       <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
         {Array.from({ length: 5 }).map((_, idx) => (
-          <div key={idx} className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-2xl border border-[#F2E8D9] dark:border-[#2D3748] w-28 sm:w-36">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full skeleton-premium animate-pulse" />
-            <div className="skeleton-premium h-4 w-16 rounded mt-3 animate-pulse" />
+          <div key={idx} className="flex flex-col items-center justify-center w-24 sm:w-28">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full skeleton-premium animate-pulse border-2 border-transparent" />
+            <div className="skeleton-premium h-3.5 w-16 rounded mt-3 animate-pulse" />
           </div>
         ))}
       </div>
@@ -85,9 +85,9 @@ const MobileCategorySkeleton = () => (
       </div>
       <div className="flex overflow-x-auto gap-3.5 pb-2">
         {Array.from({ length: 5 }).map((_, idx) => (
-          <div key={idx} className="flex-none flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-100 dark:border-[#2D3748] w-[100px] h-[120px]">
-            <div className="w-[70px] h-[70px] rounded-full skeleton-premium animate-pulse" />
-            <div className="skeleton-premium h-3.5 w-12 rounded mt-2 animate-pulse" />
+          <div key={idx} className="flex-none flex flex-col items-center justify-center w-[76px]">
+            <div className="w-[68px] h-[68px] rounded-full skeleton-premium animate-pulse border-2 border-transparent" />
+            <div className="skeleton-premium h-3 w-12 rounded mt-2.5 animate-pulse" />
           </div>
         ))}
       </div>
@@ -109,7 +109,7 @@ const BannerSlider = React.memo(({
   if (bannersLoading) {
     return (
       <>
-        <div className="hidden md:block w-[94vw] max-w-[1800px] mx-auto mt-[28px] lg:mt-[30px] mb-8">
+        <div className="hidden md:block w-full max-w-full mx-auto px-4 md:px-6 lg:px-[4px] mt-[28px] lg:mt-[30px] mb-12 lg:mb-16">
           <BannerSkeleton />
         </div>
         <div className="block md:hidden w-[94vw] mx-auto mt-[24px] mb-8">
@@ -121,8 +121,8 @@ const BannerSlider = React.memo(({
 
   return (
     <>
-      <div className="hidden md:block w-[94vw] max-w-[1800px] mx-auto mt-[28px] lg:mt-[30px] mb-8">
-        <div className="relative h-[480px] lg:h-[580px] xl:h-[620px] min-h-[450px] overflow-hidden rounded-[20px] lg:rounded-[24px] shadow-[0_20px_50px_rgba(27,11,38,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#D4A75F]/15 dark:border-white/5 bg-gradient-to-tr from-[#1B0B26] via-[#3F1D5A] to-[#2E1442]">
+      <div className="hidden md:block w-full max-w-full mx-auto px-4 md:px-6 lg:px-[4px] mt-[28px] lg:mt-[30px] mb-12 lg:mb-16">
+        <div className="relative h-[480px] lg:h-[680px] xl:h-[740px] min-h-[450px] overflow-hidden rounded-[16px] lg:rounded-[20px] shadow-[0_20px_50px_rgba(27,11,38,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#D4A75F]/15 dark:border-white/5 bg-gradient-to-tr from-[#1B0B26] via-[#3F1D5A] to-[#2E1442]">
           {isAdmin && (
             <Link
               to="/admin-control?tab=config"
@@ -148,9 +148,12 @@ const BannerSlider = React.memo(({
             className="w-full h-full cursor-grab active:cursor-grabbing relative"
           >
             {slides.map((slide, idx) => (
-              <div
+              <motion.div
                 key={idx}
-                className={`absolute inset-0 bg-gradient-to-tr ${slide.gradient} flex items-center justify-between transition-opacity duration-1000 ${idx === activeSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                initial={{ opacity: 0, x: 50 }}
+                animate={idx === activeSlide ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+                transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
+                className={`absolute inset-0 bg-gradient-to-tr ${slide.gradient} flex items-center justify-between ${idx === activeSlide ? 'z-10 pointer-events-auto' : 'z-0 pointer-events-none'
                   }`}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-[#1B0B26]/30 to-[#3F1D5A]/10 mix-blend-multiply opacity-90 pointer-events-none" />
@@ -210,7 +213,7 @@ const BannerSlider = React.memo(({
                   {slide.image_url && (
                     <motion.div 
                       style={{ y: yParallax }}
-                      className="w-full md:w-[52%] h-[320px] md:h-[440px] lg:h-[500px] xl:h-[550px] flex-none flex items-center justify-center relative"
+                      className="w-full md:w-[52%] h-[320px] md:h-[440px] lg:h-[600px] xl:h-[650px] flex-none flex items-center justify-center relative"
                     >
                       <div className="absolute inset-0 bg-[#D4A75F]/10 rounded-full blur-3xl -z-10 animate-pulse"></div>
                       <motion.img
@@ -227,7 +230,7 @@ const BannerSlider = React.memo(({
                     </motion.div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
 
@@ -403,16 +406,12 @@ const CategoryGrid = React.memo(({ activeCategory, loading }) => {
                 <Link
                   key={cat.name}
                   to={`/?category=${encodeURIComponent(cat.name)}`}
-                  className={`group flex flex-col items-center justify-center p-4 sm:p-5 rounded-2xl border transition-all duration-300 w-28 sm:w-36 focus:outline-none cursor-pointer ${
-                    isActive
-                      ? 'bg-[#3F1D5A]/5 dark:bg-[#1E293B] border-[#D4A75F] shadow-[0_0_15px_1px_rgba(212,167,95,0.3)] dark:shadow-[0_0_20px_rgba(212,167,95,0.2)]'
-                      : 'bg-white dark:bg-[#111827] border-[#F2E8D9] dark:border-[#2D3748] shadow-sm hover:scale-105 hover:border-[#D4A75F] hover:shadow-[0_0_15px_rgba(212,167,95,0.25)] dark:hover:shadow-[0_0_20px_rgba(212,167,95,0.35)]'
-                  }`}
+                  className="group flex flex-col items-center justify-center focus:outline-none cursor-pointer w-24 sm:w-28 transition-all duration-300"
                 >
-                  <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center overflow-hidden border p-1 transition-all duration-300 ${
+                  <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center overflow-hidden border-2 p-1 transition-all duration-300 ${
                     isActive
-                      ? 'bg-white dark:bg-[#1E293B] border-[#D4A75F]'
-                      : 'bg-white dark:bg-[#1E293B] border-[#F2E8D9] dark:border-[#D4A75F] group-hover:border-[#D4A75F]'
+                      ? 'bg-transparent border-[#D4A75F] shadow-[0_0_15px_rgba(212,167,95,0.4)]'
+                      : 'bg-transparent border-[#F2E8D9]/60 dark:border-slate-800/80 group-hover:border-[#D4A75F] group-hover:shadow-[0_0_12px_rgba(212,167,95,0.3)]'
                   }`}>
                     <img
                       src={cat.img}
@@ -452,47 +451,39 @@ const CategoryGrid = React.memo(({ activeCategory, loading }) => {
             </h2>
           </div>
 
-          <div className="flex overflow-x-auto gap-3.5 pb-2 scroll-smooth snap-x snap-mandatory justify-start no-scrollbar">
+          <div className="flex overflow-x-auto gap-4 pb-2 scroll-smooth snap-x snap-mandatory justify-start no-scrollbar">
             {categories.map((cat) => {
               const isActive = activeCategory === cat.name;
               return (
                 <Link
                   key={cat.name}
                   to={`/?category=${encodeURIComponent(cat.name)}`}
-                  className={`snap-center flex-none flex flex-col items-center justify-center p-2 rounded-2xl border transition-all duration-300 focus:outline-none cursor-pointer select-none ${
-                    isActive
-                      ? 'bg-[#3F1D5A]/5 dark:bg-[#1E293B] border-[#3F1D5A] dark:border-[#D4A75F] shadow-[0_4px_12px_rgba(63,29,90,0.15)] dark:shadow-[0_4px_12px_rgba(212,167,95,0.2)] scale-[1.01]'
-                      : 'bg-white dark:bg-[#111827] border-slate-100 dark:border-[#2D3748] shadow-sm hover:border-[#D4A75F]'
-                  }`}
-                  style={{
-                    width: '100px',
-                    height: '120px'
-                  }}
+                  className="snap-center flex-none flex flex-col items-center justify-center focus:outline-none cursor-pointer select-none w-[76px] sm:w-[84px] group"
                 >
                   <div 
-                    className={`rounded-full flex items-center justify-center overflow-hidden border p-0.5 transition-all duration-300 ${
+                    className={`rounded-full flex items-center justify-center overflow-hidden border-2 p-0.5 transition-all duration-300 ${
                       isActive
-                        ? 'bg-white dark:bg-[#1E293B] border-[#3F1D5A] dark:border-[#D4A75F]'
-                        : 'bg-white dark:bg-[#1E293B] border-[#F2E8D9] dark:border-[#D4A75F]'
+                        ? 'bg-transparent border-[#D4A75F] shadow-[0_0_12px_rgba(212,167,95,0.4)]'
+                        : 'bg-transparent border-slate-200 dark:border-slate-800 group-hover:border-[#D4A75F] group-hover:shadow-[0_0_10px_rgba(212,167,95,0.3)]'
                     }`}
                     style={{
-                      width: '70px',
-                      height: '70px'
+                      width: '68px',
+                      height: '68px'
                     }}
                   >
                     <img
                       src={cat.img}
                       alt={cat.label}
-                      width="70"
-                      height="70"
-                      className="w-full h-full object-cover rounded-full"
+                      width="68"
+                      height="68"
+                      className="w-full h-full object-cover rounded-full transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
                   
-                  <span className={`mt-2 text-[11px] font-bold tracking-wide transition-colors duration-300 text-center truncate w-full px-1 ${
+                  <span className={`mt-2 text-[10px] sm:text-xs font-bold tracking-wide transition-colors duration-300 text-center w-full px-0.5 ${
                     isActive 
-                      ? 'text-[#3F1D5A] dark:text-[#D4A75F]' 
-                      : 'text-slate-800 dark:text-[#F8FAFC]'
+                      ? 'text-[#D4A75F]' 
+                      : 'text-slate-800 dark:text-[#F8FAFC] group-hover:text-[#D4A75F]'
                   }`}>
                     {cat.label}
                   </span>
