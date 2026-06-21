@@ -329,3 +329,16 @@ html:not(.dark) .border-slate-300 {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Utility to hide scrollbars for premium horizontal scroll containers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
+
+

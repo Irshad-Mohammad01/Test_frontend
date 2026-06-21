@@ -1296,20 +1296,21 @@ export const Home = () => {
       </div>
 
       {/* Shop By Category Section */}
+      {/* Desktop Category Layout (md and up) */}
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full bg-white dark:bg-[#0B1020] border-y border-[#F2E8D9] dark:border-slate-800/80 py-16 transition-colors duration-300"
+        className="hidden md:block w-full bg-white dark:bg-[#0B1020] border-y border-[#F2E8D9] dark:border-slate-800/80 py-10 lg:py-12 transition-colors duration-300"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#3F1D5A] dark:text-[#D4A75F] tracking-wider relative inline-block pb-4 transition-colors duration-300">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#3F1D5A] dark:text-[#D4A75F] tracking-wider relative inline-block pb-3 transition-colors duration-300">
               Shop By Category
               <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-[#D4A75F]"></span>
             </h2>
-            <p className="text-xs text-slate-500 dark:text-[#CBD5E1] mt-3 tracking-widest uppercase font-semibold transition-colors duration-300">
+            <p className="text-xs text-slate-500 dark:text-[#CBD5E1] mt-2 tracking-widest uppercase font-semibold transition-colors duration-300">
               Discover our exquisite handcrafted masterpieces
             </p>
           </div>
@@ -1351,6 +1352,79 @@ export const Home = () => {
                     isActive 
                       ? 'text-[#D4A75F]' 
                       : 'text-slate-800 dark:text-[#F8FAFC] group-hover:text-[#D4A75F]'
+                  }`}>
+                    {cat.label}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Mobile/Tablet Category Layout (Horizontal Scrollable Row) */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="block md:hidden w-full bg-white dark:bg-[#0B1020] border-y border-[#F2E8D9] dark:border-slate-800/80 py-4 transition-colors duration-300"
+      >
+        <div className="w-[94vw] mx-auto px-1">
+          <div className="text-center mb-4">
+            <h2 className="text-lg font-serif font-bold text-[#3F1D5A] dark:text-[#D4A75F] tracking-wider relative inline-block pb-1.5 transition-colors duration-300">
+              Shop By Category
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-0.5 bg-[#D4A75F]"></span>
+            </h2>
+          </div>
+
+          <div className="flex overflow-x-auto gap-3.5 pb-2 scroll-smooth snap-x snap-mandatory justify-start no-scrollbar">
+            {[
+              { name: "Rings", label: "Rings", img: "/cat_rings.png" },
+              { name: "Necklaces", label: "Necklaces", img: "/cat_necklaces.png" },
+              { name: "Earrings", label: "Earrings", img: "/cat_earrings.png" },
+              { name: "Bracelets", label: "Bracelets", img: "/cat_bracelets.png" },
+              { name: "Bridal Collection", label: "Bridal Collection", img: "/cat_bridal.png" }
+            ].map((cat) => {
+              const isActive = activeCategory === cat.name;
+              return (
+                <Link
+                  key={cat.name}
+                  to={`/?category=${encodeURIComponent(cat.name)}`}
+                  className={`snap-center flex-none flex flex-col items-center justify-center p-2 rounded-2xl border transition-all duration-300 focus:outline-none cursor-pointer select-none ${
+                    isActive
+                      ? 'bg-[#3F1D5A]/5 dark:bg-[#1E293B] border-[#3F1D5A] dark:border-[#D4A75F] shadow-[0_4px_12px_rgba(63,29,90,0.15)] dark:shadow-[0_4px_12px_rgba(212,167,95,0.2)] scale-[1.01]'
+                      : 'bg-white dark:bg-[#111827] border-slate-100 dark:border-[#2D3748] shadow-sm hover:border-[#D4A75F]'
+                  }`}
+                  style={{
+                    width: '100px',
+                    height: '120px'
+                  }}
+                >
+                  {/* Category Image Wrapper (60px - 80px) */}
+                  <div 
+                    className={`rounded-full flex items-center justify-center overflow-hidden border p-0.5 transition-all duration-300 ${
+                      isActive
+                        ? 'bg-white dark:bg-[#1E293B] border-[#3F1D5A] dark:border-[#D4A75F]'
+                        : 'bg-white dark:bg-[#1E293B] border-[#F2E8D9] dark:border-[#D4A75F]'
+                    }`}
+                    style={{
+                      width: '70px',
+                      height: '70px'
+                    }}
+                  >
+                    <img
+                      src={cat.img}
+                      alt={cat.label}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  </div>
+                  
+                  {/* Category Name */}
+                  <span className={`mt-2 text-[11px] font-bold tracking-wide transition-colors duration-300 text-center truncate w-full px-1 ${
+                    isActive 
+                      ? 'text-[#3F1D5A] dark:text-[#D4A75F]' 
+                      : 'text-slate-800 dark:text-[#F8FAFC]'
                   }`}>
                     {cat.label}
                   </span>
