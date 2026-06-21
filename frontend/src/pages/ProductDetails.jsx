@@ -41,6 +41,24 @@ import { CartContext } from '../context/CartContext';
 import { AuthContext, API_BASE_URL } from '../context/AuthContext';
 import { ProductImageGallery } from '../components/ProductImageGallery';
 
+const ReviewsSkeleton = () => (
+  <div className="divide-y divide-slate-100 dark:divide-slate-800 space-y-4 w-full">
+    {Array.from({ length: 3 }).map((_, idx) => (
+      <div key={idx} className="pt-4 first:pt-0 space-y-2">
+        <div className="flex justify-between items-center">
+          <div className="space-y-1 w-full animate-pulse">
+            <div className="skeleton-premium h-4 w-24 rounded" />
+            <div className="skeleton-premium h-3 w-16 rounded mt-1" />
+          </div>
+          <div className="skeleton-premium h-3 w-12 rounded animate-pulse" />
+        </div>
+        <div className="skeleton-premium h-3.5 w-full rounded animate-pulse" />
+        <div className="skeleton-premium h-3.5 w-3/4 rounded mt-1 animate-pulse" />
+      </div>
+    ))}
+  </div>
+);
+
 const translationDictionary = {
   // Option attributes
   'Color': 'रंग',
@@ -1708,7 +1726,7 @@ export const ProductDetails = ({ productId }) => {
                           : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-350 dark:hover:border-slate-700'
                       }`}
                     >
-                      <img src={img} alt={`${product.name} - Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                      <img src={img} alt={`${product.name} - Thumbnail ${idx + 1}`} className="w-full h-full object-cover" width="72" height="72" />
                     </button>
                   ))}
                 </div>
@@ -1726,6 +1744,8 @@ export const ProductDetails = ({ productId }) => {
                       src={activeImage || imagesList[0]}
                       alt={product.name}
                       className="max-w-full max-h-full object-contain p-4 transition-transform duration-300 ease-out md:group-hover:scale-105 origin-[var(--zoom-x,50%)_var(--zoom-y,50%)]"
+                      width="480"
+                      height="480"
                     />
                   </div>
 
@@ -2138,7 +2158,9 @@ export const ProductDetails = ({ productId }) => {
                       <MessageSquare className="h-4 w-4 text-emerald-500" />
                       {language === 'hi' ? 'ग्राहक प्रतिक्रिया' : 'Customer Feedback'}
                     </h3>
-                    {(!product.reviews || product.reviews.length === 0) ? (
+                    {submittingReview ? (
+                      <ReviewsSkeleton />
+                    ) : (!product.reviews || product.reviews.length === 0) ? (
                       <p className="text-slate-400 text-xs italic py-2">{language === 'hi' ? 'अभी तक कोई समीक्षा नहीं है। अपना अनुभव साझा करने वाले पहले व्यक्ति बनें!' : 'No reviews yet. Be the first to share your experience!'}</p>
                     ) : (
                       <div className="divide-y divide-slate-100 dark:divide-slate-800 space-y-3">

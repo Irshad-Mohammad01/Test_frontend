@@ -58,13 +58,14 @@ export const ProductCard = ({ product, onAdminAction }) => {
         </span>
       )}
 
-      {/* Image Block */}
       <Link to={`/product/${product._id}`} className="block relative aspect-video w-full overflow-hidden bg-slate-50 dark:bg-slate-950 p-3 flex items-center justify-center">
         <img
           src={product.images[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=60'}
           alt={localize(product, 'name')}
           className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out"
           loading="lazy"
+          width="640"
+          height="360"
         />
       </Link>
 
