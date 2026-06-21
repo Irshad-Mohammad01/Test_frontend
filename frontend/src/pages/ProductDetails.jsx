@@ -40,6 +40,7 @@ import {
 import { CartContext } from '../context/CartContext';
 import { AuthContext, API_BASE_URL } from '../context/AuthContext';
 import { ProductImageGallery } from '../components/ProductImageGallery';
+import { LuxuryImage } from '../components/LuxuryImage';
 
 const ReviewsSkeleton = () => (
   <div className="divide-y divide-slate-100 dark:divide-slate-800 space-y-4 w-full">
@@ -443,11 +444,10 @@ export const ProductDetails = ({ productId }) => {
 
         {/* Image Block */}
         <div className="relative aspect-video w-full overflow-hidden bg-slate-50/50 dark:bg-slate-950/50 flex items-center justify-center p-2 mt-2">
-          <img
+          <LuxuryImage
             src={item.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}
             alt={item.name}
             className="max-h-24 max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
           />
         </div>
 
@@ -1726,7 +1726,7 @@ export const ProductDetails = ({ productId }) => {
                           : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-350 dark:hover:border-slate-700'
                       }`}
                     >
-                      <img src={img} alt={`${product.name} - Thumbnail ${idx + 1}`} className="w-full h-full object-cover" width="72" height="72" />
+                      <LuxuryImage src={img} alt={`${product.name} - Thumbnail ${idx + 1}`} className="w-full h-full object-cover" width="72" height="72" />
                     </button>
                   ))}
                 </div>
@@ -1740,7 +1740,7 @@ export const ProductDetails = ({ productId }) => {
                     onMouseEnter={() => setIsZooming(true)}
                     onMouseLeave={handleZoomMouseLeave}
                   >
-                    <img
+                    <LuxuryImage
                       src={activeImage || imagesList[0]}
                       alt={product.name}
                       className="max-w-full max-h-full object-contain p-4 transition-transform duration-300 ease-out md:group-hover:scale-105 origin-[var(--zoom-x,50%)_var(--zoom-y,50%)]"
@@ -2275,7 +2275,7 @@ export const ProductDetails = ({ productId }) => {
               >
                 <ArrowLeft className="h-6 w-6" />
               </button>
-              <img
+              <LuxuryImage
                 src={imagesList[previewImageIndex]}
                 alt={`${product.name} - Full Preview ${previewImageIndex + 1}`}
                 className="max-w-full max-h-full object-contain"
@@ -2302,7 +2302,7 @@ export const ProductDetails = ({ productId }) => {
                       : 'border-slate-700 hover:border-slate-500'
                   }`}
                 >
-                  <img src={img} alt={`Thumb ${idx + 1}`} className="w-full h-full object-cover" />
+                  <LuxuryImage src={img} alt={`Thumb ${idx + 1}`} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
@@ -2333,7 +2333,7 @@ export const ProductDetails = ({ productId }) => {
                 {/* Product Summary section */}
                 <div className="bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-slate-950 dark:to-slate-900/50 p-4 rounded-2xl mb-4 border border-slate-200/60 dark:border-slate-800/80 flex gap-4 items-center">
                   {product.images && product.images.length > 0 && (
-                    <img 
+                    <LuxuryImage 
                       src={product.images[0]} 
                       alt={product.name} 
                       className="w-20 h-20 object-cover rounded-xl border-2 border-[#D4A75F]/35 shadow-sm"

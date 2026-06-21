@@ -6,6 +6,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ProductCard, ProductCardSkeleton } from '../components/ProductCard';
 import { ProductDetails } from './ProductDetails';
 import { AuthContext, API_BASE_URL } from '../context/AuthContext';
+import { LuxuryImage } from '../components/LuxuryImage';
+
 
 const ACTION_TYPES = [
   "Product Added",
@@ -24,37 +26,24 @@ const ACTION_TYPES = [
 ];
 
 const BannerSkeleton = () => (
-  <div className="relative h-[480px] lg:h-[680px] xl:h-[740px] min-h-[450px] overflow-hidden rounded-[16px] lg:rounded-[20px] bg-[#1B0B26] border border-[#D4A75F]/15">
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skeleton-premium animate-pulse" />
-    <div className="px-8 sm:px-14 md:px-20 w-full py-6 md:py-8 flex flex-col md:flex-row items-center justify-between h-full relative gap-8 z-10">
-      <div className="w-full md:w-[48%] flex-none flex flex-col justify-center text-left md:pl-6 lg:pl-10">
-        <div className="h-6 w-32 bg-[#D4A75F]/10 rounded-full mb-4 border border-[#D4A75F]/20 animate-pulse" />
-        <div className="h-12 w-3/4 bg-slate-800 rounded-2xl mb-4 animate-pulse" />
-        <div className="h-8 w-1/2 bg-[#D4A75F]/10 rounded-xl mb-4 animate-pulse" />
-        <div className="h-4 w-5/6 bg-slate-800 rounded-lg mb-2 animate-pulse" />
-        <div className="h-4 w-4/6 bg-slate-800 rounded-lg mb-6 animate-pulse" />
-        <div className="h-12 w-40 bg-slate-800 rounded-full animate-pulse" />
-      </div>
-      <div className="w-full md:w-[52%] h-[320px] md:h-[440px] lg:h-[600px] xl:h-[650px] flex items-center justify-center relative">
-        <div className="w-[85%] h-[85%] bg-slate-800 rounded-3xl animate-pulse" />
-      </div>
-    </div>
+  <div className="relative h-[480px] lg:h-[680px] xl:h-[740px] min-h-[450px] overflow-hidden rounded-[16px] lg:rounded-[20px] bg-[#1B0B26] border border-[#D4A75F]/15 flex items-center justify-center">
+    <div className="absolute inset-0 luxury-gold-shimmer pointer-events-none" />
+    <img
+      src="/logo.svg"
+      alt="SSJewellery"
+      className="h-24 w-auto opacity-60 object-contain relative z-20 animate-pulse"
+    />
   </div>
 );
 
 const MobileBannerSkeleton = () => (
-  <div className="relative h-[390px] xs:h-[420px] sm:h-[440px] overflow-hidden rounded-[16px] bg-[#1B0B26] border border-[#D4A75F]/15">
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skeleton-premium animate-pulse" />
-    <div className="h-full flex flex-col items-center justify-between text-center pt-5 pb-8 px-4 relative z-10">
-      <div className="flex flex-col items-center space-y-2 w-full">
-        <div className="skeleton-premium h-8 w-2/3 rounded-xl animate-pulse" />
-        <div className="skeleton-premium h-4 w-1/2 rounded animate-pulse" />
-      </div>
-      <div className="skeleton-premium h-8 w-28 rounded-full animate-pulse mt-4" />
-      <div className="w-full h-[140px] xs:h-[160px] sm:h-[180px] flex items-center justify-center relative mt-2">
-        <div className="w-[70%] h-[90%] bg-slate-800 rounded-xl animate-pulse" />
-      </div>
-    </div>
+  <div className="relative h-[390px] xs:h-[420px] sm:h-[440px] overflow-hidden rounded-[16px] bg-[#1B0B26] border border-[#D4A75F]/15 flex items-center justify-center">
+    <div className="absolute inset-0 luxury-gold-shimmer pointer-events-none" />
+    <img
+      src="/logo.svg"
+      alt="SSJewellery"
+      className="h-16 w-auto opacity-60 object-contain relative z-20 animate-pulse"
+    />
   </div>
 );
 
@@ -66,9 +55,22 @@ const CategorySkeleton = () => (
         <div className="skeleton-premium h-3 w-64 rounded mt-3 animate-pulse" />
       </div>
       <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
-        {Array.from({ length: 5 }).map((_, idx) => (
+        {[
+          { label: "Rings" },
+          { label: "Necklaces" },
+          { label: "Earrings" },
+          { label: "Bracelets" },
+          { label: "Bridal Collection" }
+        ].map((cat, idx) => (
           <div key={idx} className="flex flex-col items-center justify-center w-24 sm:w-28">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full skeleton-premium animate-pulse border-2 border-transparent" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-[#F2E8D9]/60 dark:border-slate-800/80 p-1 flex items-center justify-center overflow-hidden relative">
+              <div className="absolute inset-0 luxury-gold-shimmer pointer-events-none" />
+              <img
+                src="/logo.svg"
+                alt="Loading..."
+                className="w-8 h-auto opacity-40 object-contain relative z-20 animate-pulse"
+              />
+            </div>
             <div className="skeleton-premium h-3.5 w-16 rounded mt-3 animate-pulse" />
           </div>
         ))}
@@ -84,9 +86,22 @@ const MobileCategorySkeleton = () => (
         <div className="skeleton-premium h-6 w-36 rounded animate-pulse" />
       </div>
       <div className="flex overflow-x-auto gap-3.5 pb-2">
-        {Array.from({ length: 5 }).map((_, idx) => (
+        {[
+          { label: "Rings" },
+          { label: "Necklaces" },
+          { label: "Earrings" },
+          { label: "Bracelets" },
+          { label: "Bridal Collection" }
+        ].map((cat, idx) => (
           <div key={idx} className="flex-none flex flex-col items-center justify-center w-[76px]">
-            <div className="w-[68px] h-[68px] rounded-full skeleton-premium animate-pulse border-2 border-transparent" />
+            <div className="w-[68px] h-[68px] rounded-full border-2 border-[#F2E8D9]/60 dark:border-slate-800/80 p-1 flex items-center justify-center overflow-hidden relative">
+              <div className="absolute inset-0 luxury-gold-shimmer pointer-events-none" />
+              <img
+                src="/logo.svg"
+                alt="Loading..."
+                className="w-7 h-auto opacity-40 object-contain relative z-20 animate-pulse"
+              />
+            </div>
             <div className="skeleton-premium h-3 w-12 rounded mt-2.5 animate-pulse" />
           </div>
         ))}
@@ -216,17 +231,21 @@ const BannerSlider = React.memo(({
                       className="w-full md:w-[52%] h-[320px] md:h-[440px] lg:h-[600px] xl:h-[650px] flex-none flex items-center justify-center relative"
                     >
                       <div className="absolute inset-0 bg-[#D4A75F]/10 rounded-full blur-3xl -z-10 animate-pulse"></div>
-                      <motion.img
+                      <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={idx === activeSlide ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                        src={slide.image_url}
-                        alt={slide.title}
-                        draggable="false"
-                        className="w-full h-full object-contain rounded-3xl shadow-2xl transition-all duration-700 hover:scale-105 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] animate-float-slow select-none"
-                        width="800"
-                        height="600"
-                      />
+                        className="w-full h-full object-contain rounded-3xl shadow-2xl transition-all duration-700 hover:scale-105 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] animate-float-slow select-none overflow-hidden"
+                      >
+                        <LuxuryImage
+                          src={slide.image_url}
+                          alt={slide.title}
+                          draggable="false"
+                          className="w-full h-full object-contain"
+                          width="800"
+                          height="600"
+                        />
+                      </motion.div>
                     </motion.div>
                   )}
                 </div>
@@ -327,8 +346,7 @@ const BannerSlider = React.memo(({
                       transition={{ duration: 0.6, delay: 0.45 }}
                       className="w-full h-[140px] xs:h-[160px] sm:h-[180px] flex items-center justify-center relative mt-2"
                     >
-                      <div className="absolute inset-0 bg-[#D4A75F]/5 rounded-full blur-3xl -z-10 animate-pulse"></div>
-                      <img
+                      <LuxuryImage
                         src={slide.image_url}
                         alt={slide.title}
                         draggable="false"
@@ -413,7 +431,7 @@ const CategoryGrid = React.memo(({ activeCategory, loading }) => {
                       ? 'bg-transparent border-[#D4A75F] shadow-[0_0_15px_rgba(212,167,95,0.4)]'
                       : 'bg-transparent border-[#F2E8D9]/60 dark:border-slate-800/80 group-hover:border-[#D4A75F] group-hover:shadow-[0_0_12px_rgba(212,167,95,0.3)]'
                   }`}>
-                    <img
+                    <LuxuryImage
                       src={cat.img}
                       alt={cat.label}
                       width="80"
@@ -471,7 +489,7 @@ const CategoryGrid = React.memo(({ activeCategory, loading }) => {
                       height: '68px'
                     }}
                   >
-                    <img
+                    <LuxuryImage
                       src={cat.img}
                       alt={cat.label}
                       width="68"

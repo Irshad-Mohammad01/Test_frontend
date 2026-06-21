@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 import { useTranslation } from '../hooks/useTranslation';
+import { LuxuryImage } from './LuxuryImage';
 
 export const ProductCard = ({ product, onAdminAction }) => {
   const { addToCart, addToWishlist, removeFromWishlist, isInWishlist, triggerAuthModal } = useContext(CartContext);
@@ -59,7 +60,7 @@ export const ProductCard = ({ product, onAdminAction }) => {
       )}
 
       <Link to={`/product/${product._id}`} className="block relative aspect-video w-full overflow-hidden bg-slate-50 dark:bg-slate-950 p-2 sm:p-3 flex items-center justify-center">
-        <img
+        <LuxuryImage
           src={product.images[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=60'}
           alt={localize(product, 'name')}
           className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out"
@@ -147,7 +148,14 @@ export const ProductCardSkeleton = () => {
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl border border-slate-100 dark:border-slate-700/50 shadow-sm p-3 sm:p-4 flex flex-col h-full space-y-3 sm:space-y-4">
       {/* Image skeleton */}
-      <div className="skeleton-premium aspect-video w-full rounded-lg sm:rounded-xl" />
+      <div className="relative aspect-video w-full overflow-hidden bg-slate-50 dark:bg-slate-950 rounded-lg sm:rounded-xl flex items-center justify-center">
+        <div className="absolute inset-0 luxury-gold-shimmer pointer-events-none" />
+        <img
+          src="/logo.svg"
+          alt="Loading..."
+          className="h-8 w-auto opacity-40 object-contain relative z-20 animate-pulse"
+        />
+      </div>
       
       {/* Category skeleton */}
       <div className="skeleton-premium h-3 w-1/4 rounded" />

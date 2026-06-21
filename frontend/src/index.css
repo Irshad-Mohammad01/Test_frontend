@@ -335,4 +335,57 @@ html:not(.dark) .border-slate-300 {
   scrollbar-width: none !important;  /* Firefox */
 }
 
+/* ==========================================================================
+   LUXURY GOLD SHIMMER SWEEP & PRELOADER ANIMATIONS
+   ========================================================================== */
+
+@keyframes luxury-gold-sweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.luxury-gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.95) 25%,
+    rgba(242, 232, 217, 0.8) 45%,
+    rgba(212, 167, 95, 0.25) 50%,
+    rgba(242, 232, 217, 0.8) 55%,
+    rgba(255, 255, 255, 0.95) 75%
+  );
+  background-size: 200% 100%;
+  animation: luxury-gold-sweep 1.8s infinite linear;
+}
+
+.dark .luxury-gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0.95) 25%,
+    rgba(63, 29, 90, 0.3) 45%,
+    rgba(212, 167, 95, 0.2) 50%,
+    rgba(63, 29, 90, 0.3) 55%,
+    rgba(15, 23, 42, 0.95) 75%
+  );
+  background-size: 200% 100%;
+  animation: luxury-gold-sweep 1.8s infinite linear;
+}
+
+@keyframes shimmer-bar-slide {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.animate-shimmer-bar {
+  animation: shimmer-bar-slide 1.5s infinite ease-in-out;
+}
+
+
 
