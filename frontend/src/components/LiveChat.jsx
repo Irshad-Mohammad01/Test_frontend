@@ -11,6 +11,43 @@ export const LiveChat = () => {
   const [inputText, setInputText] = useState('');
   const chatEndRef = useRef(null);
 
+  const [dragY, setDragY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const touchStartY = useRef(0);
+
+  const handleTouchStart = (e) => {
+    if (window.innerWidth >= 640) return;
+    if (e.target.closest('input') || e.target.closest('button') || e.target.closest('a')) return;
+
+    const messagesEl = e.target.closest('.messages-area');
+    if (messagesEl && messagesEl.scrollTop > 0) return;
+
+    setIsDragging(true);
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const currentY = e.touches[0].clientY;
+    const deltaY = currentY - touchStartY.current;
+
+    if (deltaY > 0) {
+      setDragY(deltaY);
+    } else {
+      setDragY(0);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+
+    if (dragY > 80) {
+      setIsOpen(false);
+    }
+    setDragY(0);
+  };
+
   // Initialize welcome message when language or open state changes
   useEffect(() => {
     setMessages([
@@ -49,9 +86,9 @@ export const LiveChat = () => {
         if (userQuery.includes('hi') || userQuery.includes('hello') || userQuery.includes('hey') || userQuery.includes('नमस्ते') || userQuery.includes('नमस्कार') || userQuery.includes('हेलो')) {
           botResponse = "नमस्ते! आशा है कि आपका खरीदारी का अनुभव शानदार रहेगा। आज आप क्या खरीदना चाह रहे हैं?";
         } else if (userQuery.includes('delivery') || userQuery.includes('ship') || userQuery.includes('track') || userQuery.includes('डिलीवरी') || userQuery.includes('ट्रैक') || userQuery.includes('भेज')) {
-          botResponse = "पुष्टि होने के तुरंत बाद आपके ऑर्डर भेज दिए जाते हैं। डिलीवरी में आमतौर पर 3 से 5 कार्य दिवस लगते हैं। आप 'मेरे ऑर्डर' अनुभाग में प्रगति को ट्रैक कर सकते हैं!";
+          botResponse = "पुष्टि होने के तुरंत बाद आपके आदेश भेज दिए जाते हैं। डिलीवरी में आमतौर पर 3 से 5 कार्य दिवस लगते हैं। आप 'मेरे आदेश' अनुभाग में प्रगति को ट्रैक कर सकते हैं!";
         } else if (userQuery.includes('refund') || userQuery.includes('return') || userQuery.includes('cancel') || userQuery.includes('वापसी') || userQuery.includes('रिफंड') || userQuery.includes('रद्द')) {
-          botResponse = "हमारे पास एक आसान 7-दिन की परेशानी मुक्त वापसी नीति है! बस एक सहायता संदेश भेजें या अपनी ऑर्डर आईडी के साथ support@SSJewellery.com पर मेल करें।";
+          botResponse = "हमारे पास एक आसान 7-दिन की परेशानी मुक्त वापसी नीति है! बस एक सहायता संदेश भेजें या अपनी आदेश आईडी के साथ support@SSJewellery.com पर मेल करें।";
         } else if (userQuery.includes('coupon') || userQuery.includes('discount') || userQuery.includes('promo') || userQuery.includes('कूपन') || userQuery.includes('छूट') || userQuery.includes('डिस्काउंट')) {
           botResponse = "अतिरिक्त छूट (केवल दृश्य) पाने के लिए चेकआउट पर 'JEWEL50' कोड का उपयोग करें! मौसमी सौदों के लिए हमारे बैनर देखें।";
         } else if (userQuery.includes('admin') || userQuery.includes('dashboard') || userQuery.includes('stats') || userQuery.includes('एडमिन') || userQuery.includes('डैशबोर्ड')) {
@@ -82,12 +119,12 @@ export const LiveChat = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 font-sans">
+    <div className="fixed bottom-0 right-0 left-0 sm:bottom-6 sm:right-6 sm:left-auto z-50 font-sans flex flex-col items-center sm:items-end px-4 pb-0 sm:px-0 pointer-events-none">
       {/* Closed Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center justify-center h-14 w-14 bg-[#3F1D5A] hover:bg-[#2f1543] text-white rounded-full shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-[#D4A75F]"
+          className="pointer-events-auto flex items-center justify-center h-14 w-14 bg-[#3F1D5A] hover:bg-[#2f1543] text-white rounded-full shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-[#D4A75F] mb-6 mr-6 sm:mb-0 sm:mr-0 cursor-pointer"
         >
           <MessageSquare className="h-6 w-6" />
         </button>
@@ -95,32 +132,50 @@ export const LiveChat = () => {
 
       {/* Expanded Chat Box */}
       {isOpen && (
-        <div className="w-80 sm:w-96 h-[450px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300">
+        <div 
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          style={{
+            transform: `translateY(${dragY}px)`,
+            transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
+          }}
+          className="pointer-events-auto w-full sm:w-96 h-[450px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300"
+        >
           
           {/* Header */}
-          <div className="bg-[#3F1D5A] px-4 py-3 flex justify-between items-center text-white">
-            <div className="flex items-center space-x-2">
-              <div className="bg-white/20 p-1.5 rounded-full">
-                <Bot className="h-5 w-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-sm leading-tight">SSJewellery Bot</h4>
-                <span className="text-[10px] text-purple-100 flex items-center">
-                  <span className="h-1.5 w-1.5 bg-[#D4A75F] rounded-full inline-block mr-1 animate-pulse"></span>
-                  {language === 'hi' ? 'सक्रिय सहायता सहायक' : 'Active support assistant'}
-                </span>
-              </div>
+          <div className="bg-[#3F1D5A] flex flex-col text-white chat-header">
+            {/* Drag Handle - Mobile only */}
+            <div className="sm:hidden flex justify-center w-full pt-2.5 pb-1 cursor-grab active:cursor-grabbing">
+              <div className="w-12 h-1.5 bg-white/40 rounded-full" />
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-white hover:text-purple-200 p-1 rounded-lg hover:bg-purple-800/50"
-            >
-              <X className="h-5 w-5" />
-            </button>
+
+            <div className="px-4 pb-3 pt-1.5 sm:py-3 flex justify-between items-center">
+              <div className="flex items-center space-x-2">
+                <div className="bg-white/20 p-1.5 rounded-full">
+                  <Bot className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm leading-tight">SSJewellery Bot</h4>
+                  <span className="text-[10px] text-purple-100 flex items-center">
+                    <span className="h-1.5 w-1.5 bg-[#D4A75F] rounded-full inline-block mr-1 animate-pulse"></span>
+                    {language === 'hi' ? 'सक्रिय सहायता सहायक' : 'Active support assistant'}
+                  </span>
+                </div>
+              </div>
+              
+              {/* Close Button - Hidden on mobile devices, visible on desktop/tablet (>= 640px) */}
+              <button
+                onClick={() => setIsOpen(false)}
+                className="hidden sm:block text-white hover:text-purple-200 p-1 rounded-lg hover:bg-purple-800/50 cursor-pointer"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
           </div>
 
           {/* Messages Area */}
-          <div className="flex-grow p-4 overflow-y-auto bg-slate-50 dark:bg-slate-950/40 space-y-3">
+          <div className="flex-grow p-4 overflow-y-auto bg-slate-50 dark:bg-slate-950/40 space-y-3 messages-area">
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -166,7 +221,7 @@ export const LiveChat = () => {
             />
             <button
               type="submit"
-              className="ml-2 p-2 bg-[#D4A75F] hover:bg-[#c39650] text-white rounded-xl shadow-md hover:scale-105 transition-transform"
+              className="ml-2 p-2 bg-[#D4A75F] hover:bg-[#c39650] text-white rounded-xl shadow-md hover:scale-105 transition-transform cursor-pointer"
             >
               <Send className="h-4 w-4" />
             </button>
