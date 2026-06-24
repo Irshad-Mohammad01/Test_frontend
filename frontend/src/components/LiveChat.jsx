@@ -119,12 +119,12 @@ export const LiveChat = () => {
   };
 
   return (
-    <div className="fixed bottom-0 right-0 left-0 sm:bottom-6 sm:right-6 sm:left-auto z-50 font-sans flex flex-col items-center sm:items-end px-4 pb-0 sm:px-0 pointer-events-none">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 font-sans flex flex-col items-end pointer-events-none">
       {/* Closed Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="pointer-events-auto flex items-center justify-center h-14 w-14 bg-[#3F1D5A] hover:bg-[#2f1543] text-white rounded-full shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-[#D4A75F] mb-6 mr-6 sm:mb-0 sm:mr-0 cursor-pointer"
+          className="pointer-events-auto flex items-center justify-center h-14 w-14 bg-[#3F1D5A] hover:bg-[#2f1543] text-white rounded-full shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-[#D4A75F] cursor-pointer"
         >
           <MessageSquare className="h-6 w-6" />
         </button>
@@ -140,7 +140,7 @@ export const LiveChat = () => {
             transform: `translateY(${dragY}px)`,
             transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
-          className="pointer-events-auto w-full sm:w-96 h-[450px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300"
+          className="pointer-events-auto w-[calc(100vw-32px)] sm:w-96 h-[450px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300"
         >
           
           {/* Header */}
