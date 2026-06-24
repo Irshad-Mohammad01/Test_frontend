@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, Search, ShoppingCart, Heart, ClipboardList, Sun, Moon, LogIn, LogOut, Shield, Menu, X, User, Globe, Settings, Bell, Check, Trash2, Clock, AlertTriangle, DollarSign, MessageSquare, Home, Sparkles, Info, Mail } from 'lucide-react';
+import { ShoppingBag, Search, ShoppingCart, Heart, ClipboardList, Sun, Moon, LogIn, LogOut, Shield, Menu, X, User, UserPlus, Globe, Settings, Bell, Check, Trash2, Clock, AlertTriangle, DollarSign, MessageSquare, Home, Sparkles, Info, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuthContext, API_BASE_URL } from '../context/AuthContext';
 import { CartContext } from '../context/CartContext';
@@ -207,10 +207,10 @@ export const Navbar = () => {
             {/* Hamburger Menu (Mobile/Tablet Only) */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-[#3F1D5A] dark:text-[#EFE7DB] hover:bg-[#FAFAFA] dark:hover:bg-slate-800 transition-colors lg:hidden cursor-pointer"
+              className="w-11 h-11 flex items-center justify-center rounded-xl text-[#3F1D5A] dark:text-[#EFE7DB] hover:bg-[#FAFAFA] dark:hover:bg-slate-800 transition-colors lg:hidden cursor-pointer"
               title="Toggle Mobile Menu"
             >
-              {mobileMenuOpen ? <X className="h-5.5 w-5.5" /> : <Menu className="h-5.5 w-5.5" />}
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
 
             {/* SSJewellery Logo and Brand Name Identity */}
@@ -221,10 +221,11 @@ export const Navbar = () => {
                 className="h-[46px] md:h-[56px] lg:h-[65px] w-auto object-contain flex-shrink-0"
               />
               <div className="flex items-baseline whitespace-nowrap">
-                <span className="font-cinzel text-lg sm:text-xl md:text-2xl font-bold tracking-[2px] text-[#3F1D5A] dark:text-[#EFE7DB] transition-colors duration-300">
+                <span className="font-great-vibes text-xl sm:text-2xl md:text-3xl text-[#3F1D5A] dark:text-[#EFE7DB] relative pb-1 transition-colors duration-300 select-none">
                   SS
+                  <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#D4A75F]"></span>
                 </span>
-                <span className="font-great-vibes text-xl sm:text-2xl md:text-3xl text-[#3F1D5A] dark:text-[#EFE7DB] ml-1.5 relative pb-1 transition-colors duration-300 select-none">
+                <span className="font-great-vibes text-xl sm:text-2xl md:text-3xl text-[#3F1D5A] dark:text-[#EFE7DB] ml-2 relative pb-1 transition-colors duration-300 select-none">
                   Jewellery
                   <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#D4A75F]"></span>
                 </span>
@@ -683,9 +684,9 @@ export const Navbar = () => {
             )}
           </div>
 
-          {/* MOBILE/TABLET RIGHT SECTION: Icons (Wishlist, Cart, Orders, Profile/Login) */}
-          <div className="flex lg:hidden items-center gap-1 sm:gap-1.5 flex-shrink-0">
-            {/* Wishlist Icon - Hidden under 420px, priority 3 */}
+          {/* MOBILE/TABLET RIGHT SECTION: Icons (Wishlist, Cart, ProfileDropdown) */}
+          <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            {/* Wishlist Icon - Always visible on mobile/tablet */}
             {!isAdmin && (
               <button
                 onClick={(e) => {
@@ -696,7 +697,7 @@ export const Navbar = () => {
                     navigate('/orders?tab=wishlist');
                   }
                 }}
-                className="hidden min-[420px]:flex relative p-1.5 sm:p-2 rounded-xl text-[#3F1D5A] dark:text-[#EFE7DB] hover:bg-[#FAFAFA] dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                className="w-11 h-11 flex items-center justify-center relative rounded-xl text-[#3F1D5A] dark:text-[#EFE7DB] hover:bg-[#FAFAFA] dark:hover:bg-slate-800 transition-colors cursor-pointer"
                 title={t('common.wishlist')}
               >
                 <Heart className="h-5.5 w-5.5 text-[#3F1D5A] dark:text-[#D4A75F]" />
@@ -706,7 +707,7 @@ export const Navbar = () => {
                     initial={{ scale: 0.6, opacity: 0 }}
                     animate={{ scale: [0.6, 1.25, 1], opacity: 1 }}
                     transition={{ duration: 0.4, type: 'spring', stiffness: 260, damping: 12 }}
-                    className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-[#D4A75F] text-white text-[8px] font-black rounded-full flex items-center justify-center border border-white dark:border-slate-950 shadow-sm animate-cart-bounce"
+                    className="absolute top-1.5 right-1.5 h-4 w-4 bg-[#D4A75F] text-white text-[8px] font-black rounded-full flex items-center justify-center border border-white dark:border-slate-950 shadow-sm"
                   >
                     {wishlistCount}
                   </motion.span>
@@ -714,7 +715,7 @@ export const Navbar = () => {
               </button>
             )}
 
-            {/* Cart Icon - Always visible, priority 1 */}
+            {/* Cart Icon - Always visible on mobile/tablet */}
             {!isAdmin && (
               <button
                 onClick={(e) => {
@@ -725,7 +726,7 @@ export const Navbar = () => {
                     navigate('/cart');
                   }
                 }}
-                className="relative p-1.5 sm:p-2 rounded-xl text-[#3F1D5A] dark:text-[#EFE7DB] hover:bg-[#FAFAFA] dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                className="w-11 h-11 flex items-center justify-center relative rounded-xl text-[#3F1D5A] dark:text-[#EFE7DB] hover:bg-[#FAFAFA] dark:hover:bg-slate-800 transition-colors cursor-pointer"
                 title={t('common.cart')}
               >
                 <ShoppingCart className="h-5.5 w-5.5 text-[#3F1D5A] dark:text-[#D4A75F]" />
@@ -735,7 +736,7 @@ export const Navbar = () => {
                     initial={{ scale: 0.6, opacity: 0 }}
                     animate={{ scale: [0.6, 1.25, 1], opacity: 1 }}
                     transition={{ duration: 0.4, type: 'spring', stiffness: 260, damping: 12 }}
-                    className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-[#D4A75F] text-white text-[8px] font-black rounded-full flex items-center justify-center border border-white dark:border-slate-950 shadow-sm animate-cart-bounce"
+                    className="absolute top-1.5 right-1.5 h-4 w-4 bg-[#D4A75F] text-white text-[8px] font-black rounded-full flex items-center justify-center border border-white dark:border-slate-950 shadow-sm"
                   >
                     {cartCount}
                   </motion.span>
@@ -743,96 +744,112 @@ export const Navbar = () => {
               </button>
             )}
 
-            {/* My Orders Icon - Hidden under 500px, priority 4 */}
-            {!isAdmin && (
+            {/* Profile Dropdown Icon - Always visible on mobile/tablet */}
+            <div className="relative flex">
               <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (!user) {
-                    triggerAuthModal(language === 'hi' ? 'कृपया अपने ऑर्डर देखने के लिए लॉगिन करें।' : 'Please login to view your orders.', '/orders');
-                  } else {
-                    navigate('/orders');
-                  }
-                }}
-                className="hidden min-[500px]:flex p-1.5 sm:p-2 rounded-xl text-[#3F1D5A] dark:text-[#EFE7DB] hover:bg-[#FAFAFA] dark:hover:bg-slate-800 transition-colors cursor-pointer"
-                title={t('navbar.my_orders')}
+                onClick={() => setMobileProfileOpen(!mobileProfileOpen)}
+                className="w-11 h-11 flex items-center justify-center rounded-xl text-[#3F1D5A] dark:text-[#EFE7DB] hover:bg-[#FAFAFA] dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                title={user ? user.name : t('common.profile')}
               >
-                <ClipboardList className="h-5.5 w-5.5 text-[#3F1D5A] dark:text-[#D4A75F]" />
+                {user ? (
+                  <div className="h-7 w-7 rounded-full bg-[#D4A75F] text-white flex items-center justify-center text-xs font-bold uppercase shadow-sm">
+                    {user.name.charAt(0)}
+                  </div>
+                ) : (
+                  <User className="h-5.5 w-5.5 text-[#3F1D5A] dark:text-[#D4A75F]" />
+                )}
               </button>
-            )}
-
-            {/* Profile / Login Icon - Hidden under 350px, priority 2 */}
-            <div className="hidden min-[350px]:flex relative">
-              {user ? (
-                <div className="relative flex">
-                  <button
-                    onClick={() => setMobileProfileOpen(!mobileProfileOpen)}
-                    className="flex items-center p-1 rounded-full border border-[#F2E8D9]/80 dark:border-slate-700 bg-[#FAFAFA] dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 transition-colors cursor-pointer"
-                  >
-                    <div className="h-6 w-6 rounded-full bg-[#D4A75F] text-white flex items-center justify-center text-[10px] font-bold uppercase shadow-sm">
-                      {user.name.charAt(0)}
-                    </div>
-                  </button>
-                  <AnimatePresence>
-                    {mobileProfileOpen && (
-                      <>
-                        <div className="fixed inset-0 z-40" onClick={() => setMobileProfileOpen(false)} />
-                        <motion.div
-                          initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                          className="absolute right-0 mt-8 w-48 bg-white dark:bg-[#121826] border border-[#F2E8D9] dark:border-[rgba(212,167,95,0.25)] rounded-2xl shadow-xl dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] py-2 z-50 origin-top-right overflow-hidden"
-                        >
-                        <div className="px-4 py-2 border-b border-slate-100 dark:border-[rgba(212,167,95,0.15)]">
-                          <p className="text-xs font-bold text-slate-700 dark:text-white truncate">{user.name}</p>
-                          <p className="text-[10px] text-slate-400 truncate">{user.email}</p>
-                        </div>
-                        {isAdmin && (
-                          <Link
-                            to="/admin"
-                            onClick={() => setMobileProfileOpen(false)}
-                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#3F1D5A] hover:bg-slate-50 dark:text-white dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
-                          >
-                            <Shield className="h-4 w-4 text-[#3F1D5A] dark:text-[#D4A75F]" />
-                            <span>Admin Panel</span>
-                          </Link>
-                        )}
-                        {!isAdmin && (
+              <AnimatePresence>
+                {mobileProfileOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setMobileProfileOpen(false)} />
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                      className="absolute right-0 mt-12 w-48 bg-white dark:bg-[#121826] border border-[#F2E8D9] dark:border-[rgba(212,167,95,0.25)] rounded-2xl shadow-xl dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] py-2 z-50 origin-top-right overflow-hidden"
+                    >
+                      {user ? (
+                        <>
+                          <div className="px-4 py-2 border-b border-slate-100 dark:border-[rgba(212,167,95,0.15)] mb-1">
+                            <p className="text-xs font-bold text-slate-700 dark:text-white truncate">{user.name}</p>
+                            <p className="text-[10px] text-slate-400 truncate">{user.email}</p>
+                          </div>
+                          {isAdmin && (
+                            <Link
+                              to="/admin"
+                              onClick={() => setMobileProfileOpen(false)}
+                              className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] dark:text-white hover:bg-slate-50 dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
+                            >
+                              <Shield className="h-4 w-4 text-[#3F1D5A] dark:text-[#D4A75F]" />
+                              <span>Admin Panel</span>
+                            </Link>
+                          )}
                           <Link
                             to="/profile"
                             onClick={() => setMobileProfileOpen(false)}
-                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] hover:bg-slate-50 dark:text-white dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
+                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] dark:text-white hover:bg-slate-50 dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
                           >
                             <User className="h-4 w-4 text-[#3F1D5A] dark:text-[#D4A75F]" />
                             <span>{language === 'hi' ? 'मेरी प्रोफ़ाइल' : 'My Profile'}</span>
                           </Link>
-                        )}
-                        <button
-                          onClick={() => {
-                            setMobileProfileOpen(false);
-                            logout();
-                            navigate('/');
-                          }}
-                          className="w-full flex items-center space-x-2 px-4 py-2.5 text-sm text-red-500 hover:bg-[#FAFAFA] dark:text-white dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200 text-left cursor-pointer bg-transparent border-none"
-                        >
-                          <LogOut className="h-4 w-4 text-red-500 dark:text-[#D4A75F]" />
-                          <span>{t('navbar.sign_out')}</span>
-                        </button>
-                        </motion.div>
-                      </>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ) : (
-                <Link
-                  to="/login"
-                  className="p-1.5 sm:p-2 rounded-xl text-[#3F1D5A] dark:text-[#EFE7DB] hover:bg-[#FAFAFA] dark:hover:bg-slate-800 transition-colors cursor-pointer"
-                  title={t('common.sign_in')}
-                >
-                  <User className="h-5.5 w-5.5 text-[#3F1D5A] dark:text-[#D4A75F]" />
-                </Link>
-              )}
+                          {!isAdmin && (
+                            <>
+                              <Link
+                                to="/orders"
+                                onClick={() => setMobileProfileOpen(false)}
+                                className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] dark:text-white hover:bg-slate-50 dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
+                              >
+                                <ClipboardList className="h-4 w-4 text-[#3F1D5A] dark:text-[#D4A75F]" />
+                                <span>{language === 'hi' ? 'मेरे आदेश' : 'My Orders'}</span>
+                              </Link>
+                              <Link
+                                to="/orders?tab=wishlist"
+                                onClick={() => setMobileProfileOpen(false)}
+                                className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] dark:text-white hover:bg-slate-50 dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
+                              >
+                                <Heart className="h-4 w-4 text-[#3F1D5A] dark:text-[#D4A75F]" />
+                                <span>{language === 'hi' ? 'इच्छा-सूची' : 'Wishlist'}</span>
+                              </Link>
+                            </>
+                          )}
+                          <button
+                            onClick={() => {
+                              setMobileProfileOpen(false);
+                              logout();
+                              navigate('/');
+                            }}
+                            className="w-full flex items-center space-x-2 px-4 py-2.5 text-sm text-red-500 hover:bg-[#FAFAFA] dark:text-white dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200 text-left cursor-pointer bg-transparent border-none"
+                          >
+                            <LogOut className="h-4 w-4 text-red-500 dark:text-[#D4A75F]" />
+                            <span>{t('navbar.sign_out')}</span>
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <Link
+                            to="/login"
+                            onClick={() => setMobileProfileOpen(false)}
+                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] dark:text-white hover:bg-slate-50 dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
+                          >
+                            <LogIn className="h-4 w-4 text-[#3F1D5A] dark:text-[#D4A75F]" />
+                            <span>{language === 'hi' ? 'साइन इन करें' : 'Sign In'}</span>
+                          </Link>
+                          <Link
+                            to="/register"
+                            onClick={() => setMobileProfileOpen(false)}
+                            className="flex items-center space-x-2 px-4 py-2.5 text-sm text-[#1F1F1F] dark:text-white hover:bg-slate-50 dark:hover:bg-[rgba(212,167,95,0.12)] dark:hover:text-[#D4A75F] transition-all duration-200"
+                          >
+                            <UserPlus className="h-4 w-4 text-[#3F1D5A] dark:text-[#D4A75F]" />
+                            <span>{language === 'hi' ? 'खाता बनाएं' : 'Create Account'}</span>
+                          </Link>
+                        </>
+                      )}
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
@@ -896,10 +913,11 @@ export const Navbar = () => {
                   className="h-[46px] w-auto object-contain flex-shrink-0"
                 />
                 <div className="flex items-baseline brand-typography-wrapper whitespace-nowrap">
-                  <span className="font-cinzel text-base font-bold tracking-[1.5px] text-[#3F1D5A] dark:text-[#EFE7DB]">
+                  <span className="font-great-vibes text-lg text-[#3F1D5A] dark:text-[#EFE7DB] relative pb-0.5 select-none">
                     SS
+                    <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#D4A75F] opacity-80"></span>
                   </span>
-                  <span className="font-great-vibes text-lg text-[#3F1D5A] dark:text-[#EFE7DB] ml-1 relative pb-0.5">
+                  <span className="font-great-vibes text-lg text-[#3F1D5A] dark:text-[#EFE7DB] ml-1.5 relative pb-0.5 select-none">
                     Jewellery
                     <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#D4A75F] opacity-80"></span>
                   </span>
