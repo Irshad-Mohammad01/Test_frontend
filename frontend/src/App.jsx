@@ -49,14 +49,14 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Scroll to top on every route change or search parameter change
+  // Scroll to top on every route change (but not query param/search updates)
   React.useEffect(() => {
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: 'smooth'
     });
-  }, [location.pathname, location.search]);
+  }, [location.pathname]);
 
   return (
     <>
