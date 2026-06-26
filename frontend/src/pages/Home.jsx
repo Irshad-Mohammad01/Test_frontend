@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { ChevronLeft, ChevronRight, ShoppingBag, Eye, Star, Sparkles, X, Search, Users, Calendar, Clock, DollarSign, MapPin, Check, Lock, RefreshCw, Plus, Trash2, Edit3, Upload } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -119,8 +119,17 @@ const BannerSlider = React.memo(({
   handlePrevSlide, 
   opacityParallax, 
   yParallax,
-  bannersLoading
+  bannersLoading,
+  onCategoryClick
 }) => {
+  const handleBannerButtonClick = (e, slide) => {
+    const link = slide.btnLink || `/?category=${slide.catFilter}`;
+    if (link.startsWith('/?category=') || link === '/') {
+      e.preventDefault();
+      onCategoryClick(slide.catFilter || 'All', 'banner');
+    }
+  };
+
   if (bannersLoading) {
     return (
       <>
@@ -215,15 +224,20 @@ const BannerSlider = React.memo(({
                     >
                       {slide.desc}
                     </motion.p>
-                    <motion.a
+                    <motion.div
                       initial={{ opacity: 0 }}
                       animate={idx === activeSlide ? { opacity: 1 } : { opacity: 0 }}
                       transition={{ duration: 0.5, delay: 0.5 }}
-                      href={slide.btnLink || `/?category=${slide.catFilter}`}
-                      className="px-8 py-3.5 bg-[#D4A75F] text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-lg transition-transform hover:scale-105 duration-300 w-fit flex items-center gap-2 cursor-pointer gold-shimmer-btn relative overflow-hidden"
+                      className="w-fit"
                     >
-                      {slide.btnText}
-                    </motion.a>
+                      <Link
+                        to={slide.btnLink || `/?category=${slide.catFilter}`}
+                        onClick={(e) => handleBannerButtonClick(e, slide)}
+                        className="px-8 py-3.5 bg-[#D4A75F] text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-lg transition-transform hover:scale-105 duration-300 w-fit flex items-center gap-2 cursor-pointer gold-shimmer-btn relative overflow-hidden"
+                      >
+                        {slide.btnText}
+                      </Link>
+                    </motion.div>
                   </motion.div>
                   {slide.image_url && (
                     <motion.div 
@@ -328,15 +342,20 @@ const BannerSlider = React.memo(({
                   </div>
 
                   <div className="my-2">
-                    <motion.a
+                    <motion.div
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={idx === activeSlide ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.4, delay: 0.4 }}
-                      href={slide.btnLink || `/?category=${slide.catFilter}`}
-                      className="px-5 py-2 bg-[#D4A75F] text-white font-bold text-[11px] uppercase tracking-wider rounded-full shadow-lg transition-transform active:scale-95 duration-300 w-fit flex items-center gap-1.5 cursor-pointer gold-shimmer-btn relative overflow-hidden"
+                      className="w-fit"
                     >
-                      {slide.btnText}
-                    </motion.a>
+                      <Link
+                        to={slide.btnLink || `/?category=${slide.catFilter}`}
+                        onClick={(e) => handleBannerButtonClick(e, slide)}
+                        className="px-5 py-2 bg-[#D4A75F] text-white font-bold text-[11px] uppercase tracking-wider rounded-full shadow-lg transition-transform active:scale-95 duration-300 w-fit flex items-center gap-1.5 cursor-pointer gold-shimmer-btn relative overflow-hidden"
+                      >
+                        {slide.btnText}
+                      </Link>
+                    </motion.div>
                   </div>
 
                   {slide.image_url && (
@@ -379,7 +398,7 @@ const BannerSlider = React.memo(({
   );
 });
 
-const CategoryGrid = React.memo(({ activeCategory, loading }) => {
+const CategoryGrid = React.memo(({ activeCategory, loading, onCategoryClick }) => {
   if (loading) {
     return (
       <>
@@ -421,33 +440,43 @@ const CategoryGrid = React.memo(({ activeCategory, loading }) => {
             {categories.map((cat) => {
               const isActive = activeCategory === cat.name;
               return (
-                <Link
+                <motion.div
                   key={cat.name}
-                  to={`/?category=${encodeURIComponent(cat.name)}`}
-                  className="group flex flex-col items-center justify-center focus:outline-none cursor-pointer w-24 sm:w-28 transition-all duration-300"
+                  animate={isActive ? { scale: 1.08 } : { scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="flex flex-col items-center"
                 >
-                  <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center overflow-hidden border-2 p-1 transition-all duration-300 ${
-                    isActive
-                      ? 'bg-transparent border-[#D4A75F] shadow-[0_0_15px_rgba(212,167,95,0.4)]'
-                      : 'bg-transparent border-[#F2E8D9]/60 dark:border-slate-800/80 group-hover:border-[#D4A75F] group-hover:shadow-[0_0_12px_rgba(212,167,95,0.3)]'
-                  }`}>
-                    <LuxuryImage
-                      src={cat.img}
-                      alt={cat.label}
-                      width="80"
-                      height="80"
-                      className="w-full h-full object-cover rounded-full transition-transform duration-500 group-hover:scale-110"
-                    />
-                  </div>
-                  
-                  <span className={`mt-3 text-xs sm:text-sm font-bold tracking-wide transition-colors duration-300 text-center ${
-                    isActive 
-                      ? 'text-[#D4A75F]' 
-                      : 'text-slate-800 dark:text-[#F8FAFC] group-hover:text-[#D4A75F]'
-                  }`}>
-                    {cat.label}
-                  </span>
-                </Link>
+                  <Link
+                    to={`/?category=${encodeURIComponent(cat.name)}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onCategoryClick(cat.name);
+                    }}
+                    className="group flex flex-col items-center justify-center focus:outline-none cursor-pointer w-24 sm:w-28 transition-all duration-300"
+                  >
+                    <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center overflow-hidden border-2 p-1 transition-all duration-300 ${
+                      isActive
+                        ? 'bg-transparent border-[#D4A75F] shadow-[0_0_15px_rgba(212,167,95,0.4)]'
+                        : 'bg-transparent border-[#F2E8D9]/60 dark:border-slate-800/80 group-hover:border-[#D4A75F] group-hover:shadow-[0_0_12px_rgba(212,167,95,0.3)]'
+                    }`}>
+                      <LuxuryImage
+                        src={cat.img}
+                        alt={cat.label}
+                        width="80"
+                        height="80"
+                        className="w-full h-full object-cover rounded-full transition-transform duration-500 group-hover:scale-110"
+                      />
+                    </div>
+                    
+                    <span className={`mt-3 text-xs sm:text-sm font-bold tracking-wide transition-colors duration-300 text-center ${
+                      isActive 
+                        ? 'text-[#D4A75F]' 
+                        : 'text-slate-800 dark:text-[#F8FAFC] group-hover:text-[#D4A75F]'
+                    }`}>
+                      {cat.label}
+                    </span>
+                  </Link>
+                </motion.div>
               );
             })}
           </div>
@@ -473,39 +502,49 @@ const CategoryGrid = React.memo(({ activeCategory, loading }) => {
             {categories.map((cat) => {
               const isActive = activeCategory === cat.name;
               return (
-                <Link
+                <motion.div
                   key={cat.name}
-                  to={`/?category=${encodeURIComponent(cat.name)}`}
-                  className="snap-center flex-none flex flex-col items-center justify-center focus:outline-none cursor-pointer select-none w-[76px] sm:w-[84px] group"
+                  animate={isActive ? { scale: 1.08 } : { scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="flex-none flex flex-col items-center justify-center"
                 >
-                  <div 
-                    className={`rounded-full flex items-center justify-center overflow-hidden border-2 p-0.5 transition-all duration-300 ${
-                      isActive
-                        ? 'bg-transparent border-[#D4A75F] shadow-[0_0_12px_rgba(212,167,95,0.4)]'
-                        : 'bg-transparent border-slate-200 dark:border-slate-800 group-hover:border-[#D4A75F] group-hover:shadow-[0_0_10px_rgba(212,167,95,0.3)]'
-                    }`}
-                    style={{
-                      width: '68px',
-                      height: '68px'
+                  <Link
+                    to={`/?category=${encodeURIComponent(cat.name)}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onCategoryClick(cat.name);
                     }}
+                    className="snap-center flex-none flex flex-col items-center justify-center focus:outline-none cursor-pointer select-none w-[76px] sm:w-[84px] group"
                   >
-                    <LuxuryImage
-                      src={cat.img}
-                      alt={cat.label}
-                      width="68"
-                      height="68"
-                      className="w-full h-full object-cover rounded-full transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  
-                  <span className={`mt-2 text-[10px] sm:text-xs font-bold tracking-wide transition-colors duration-300 text-center w-full px-0.5 ${
-                    isActive 
-                      ? 'text-[#D4A75F]' 
-                      : 'text-slate-800 dark:text-[#F8FAFC] group-hover:text-[#D4A75F]'
-                  }`}>
-                    {cat.label}
-                  </span>
-                </Link>
+                    <div 
+                      className={`rounded-full flex items-center justify-center overflow-hidden border-2 p-0.5 transition-all duration-300 ${
+                        isActive
+                          ? 'bg-transparent border-[#D4A75F] shadow-[0_0_12px_rgba(212,167,95,0.4)]'
+                          : 'bg-transparent border-slate-200 dark:border-slate-800 group-hover:border-[#D4A75F] group-hover:shadow-[0_0_10px_rgba(212,167,95,0.3)]'
+                      }`}
+                      style={{
+                        width: '68px',
+                        height: '68px'
+                      }}
+                    >
+                      <LuxuryImage
+                        src={cat.img}
+                        alt={cat.label}
+                        width="68"
+                        height="68"
+                        className="w-full h-full object-cover rounded-full transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                    
+                    <span className={`mt-2 text-[10px] sm:text-xs font-bold tracking-wide transition-colors duration-300 text-center w-full px-0.5 ${
+                      isActive 
+                        ? 'text-[#D4A75F]' 
+                        : 'text-slate-800 dark:text-[#F8FAFC] group-hover:text-[#D4A75F]'
+                    }`}>
+                      {cat.label}
+                    </span>
+                  </Link>
+                </motion.div>
               );
             })}
           </div>
@@ -1303,9 +1342,26 @@ export const Home = () => {
   };
 
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = searchParams.get('category') || 'All';
   const activeSearch = searchParams.get('search') || '';
+
+  const handleCategoryClick = useCallback((categoryName, source = 'grid') => {
+    const newParams = new URLSearchParams(searchParams);
+    if (categoryName === 'All') {
+      newParams.delete('category');
+    } else {
+      newParams.set('category', categoryName);
+    }
+    setSearchParams(newParams, { preventScrollReset: true });
+
+    if (source === 'banner') {
+      const allProductsHeading = document.getElementById('all-products-heading');
+      if (allProductsHeading) {
+        allProductsHeading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [searchParams, setSearchParams]);
 
   // Banner Management States
   const [slides, setSlides] = useState([
@@ -1630,16 +1686,18 @@ export const Home = () => {
         opacityParallax={opacityParallax}
         yParallax={yParallax}
         bannersLoading={bannersLoading}
+        onCategoryClick={handleCategoryClick}
       />
 
       <CategoryGrid 
         activeCategory={activeCategory} 
         loading={loading} 
+        onCategoryClick={handleCategoryClick}
       />
 
 
       {/* Main Content Area */}
-      <div className="w-full max-w-[97%] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+      <div id="all-products-heading" className="w-full max-w-[97%] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
         {/* Title / Filter Info */}
         <div className="flex flex-col sm:flex-row justify-between items-baseline mb-8 border-b border-slate-200/50 dark:border-slate-800 pb-4">
           <div>
@@ -1687,8 +1745,11 @@ export const Home = () => {
           <div className="flex items-center gap-4 mt-4 sm:mt-0 self-end sm:self-auto relative">
             {activeCategory !== 'All' && activeTab === 'products' && (
               <button
-                onClick={() => window.location.href = '/'}
-                className="text-xs text-emerald-500 hover:underline font-bold"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCategoryClick('All');
+                }}
+                className="text-xs text-[#D4A75F] hover:text-[#B38F4B] hover:underline font-bold transition-colors"
               >
                 Clear filters
               </button>
@@ -1741,8 +1802,11 @@ export const Home = () => {
               We couldn't find any products matching your current category filter or search query.
             </p>
             <button
-              onClick={() => window.location.href = '/'}
-              className="mt-6 px-5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-md"
+              onClick={(e) => {
+                e.preventDefault();
+                handleCategoryClick('All');
+              }}
+              className="mt-6 px-5 py-2 bg-[#D4A75F] hover:bg-[#B38F4B] text-white rounded-xl text-xs font-bold shadow-md transition-colors"
             >
               View All Products
             </button>
@@ -1751,7 +1815,13 @@ export const Home = () => {
 
         {/* Product Grid */}
         {activeTab === 'products' && !loading && !error && products.length > 0 && (
-          <div className="product-grid">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className="product-grid"
+          >
             {products.map(product => (
               <ProductCard
                 key={product._id}
@@ -1759,7 +1829,7 @@ export const Home = () => {
                 onAdminAction={(productId) => setSelectedAdminProductId(productId)}
               />
             ))}
-          </div>
+          </motion.div>
         )}
 
         {/* Users Data Tab Content */}
